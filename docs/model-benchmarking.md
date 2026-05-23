@@ -120,7 +120,7 @@ with the current code, and compare those single runs.
 
 ```bash
 python3 scripts/bench_cost.py gpt-5.5 ds4-flash ds4-pro      # cost table
-/scratch/users/steorra/env/omicdev/bin/python \
+python3 \
     scripts/bench_cost_chart.py gpt-5.5 ds4-flash ds4-pro    # cost-vs-score scatter
 ```
 
