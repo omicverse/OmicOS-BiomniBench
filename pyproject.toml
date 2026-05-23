@@ -29,7 +29,8 @@ dependencies = [
     "tenacity>=8.5",
     "openai>=1.40",                # judge client (OpenAI-compat: DeepSeek, etc.)
     "pandas>=2",
-    "matplotlib>=3.7",             # analysis/ figures
+    "matplotlib>=3.7",             # analysis/ static figures (PNG)
+    "plotly>=5.20",                # analysis/ interactive figures (HTML)
 ]
 
 [project.optional-dependencies]

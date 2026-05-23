@@ -6,11 +6,11 @@
 #
 #   provider   codex | deepseek | custom_openai | gemini   (see docs/model-benchmarking.md)
 #   model      provider's model id, e.g. deepseek-v4-pro, gpt-5.5
-#   label      run-id == result namespace. One per model. Lands in runs/<label>/.
+#   label      run-id == result namespace. One per model. Lands in results/<label>/.
 #   -j N       parallel cells (default 4). API-bound; 4-6 is sane.
 #   --tids csv re-run only these task ids into an EXISTING label (infra-failure fix).
 #
-# Each model's results live under runs/<label>/ — distinct labels never
+# Each model's results live under results/<label>/ — distinct labels never
 # collide, so a new model run cannot overwrite an existing one. configs/
 # models.yaml is patched in place for the run and ALWAYS restored on exit.
 #
@@ -43,12 +43,12 @@ export OMICOS_BIN="${OMICOS_BIN:-$PROJECT/../omicos-core/target/release/omicos}"
 [[ -d .venv ]] || uv sync
 
 MODELS_YAML="$PROJECT/configs/models.yaml"
-RUN_DIR="$PROJECT/runs/$LABEL"
+RUN_DIR="$PROJECT/results/$LABEL"
 
 # Protect prior models' results: refuse to clobber an existing label
 # unless --tids is given (the targeted infra-failure re-run path).
 if [[ -e "$RUN_DIR" && -z "$TIDS" ]]; then
-  echo "ERROR: runs/$LABEL already exists. Use a fresh label, or pass --tids to re-run cells." >&2
+  echo "ERROR: results/$LABEL already exists. Use a fresh label, or pass --tids to re-run cells." >&2
   exit 3
 fi
 
@@ -87,5 +87,5 @@ ARGS=(run --agents vertical_agent_selector --run-id "$LABEL" -j "$J")
 uv run omicos-biomnibench "${ARGS[@]}"
 
 echo
-echo "[bench] done -> runs/$LABEL"
+echo "[bench] done -> results/$LABEL"
 python3 scripts/bench_compare.py "$LABEL" || true

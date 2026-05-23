@@ -49,7 +49,7 @@ def omicos_score(label):
     """Mean rubric score x100 over all 50 tasks, infra-failure cells excluded."""
     sc = []
     for gj in glob.glob(str(
-            PROJECT / f"runs/{label}/vertical_agent_selector/da-*/grade.json")):
+            PROJECT / f"results/{label}/vertical_agent_selector/da-*/grade.json")):
         d = json.load(open(gj))
         s = d.get("score")
         if s is None or d.get("grade_mode") in INFRA:

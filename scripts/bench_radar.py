@@ -127,7 +127,7 @@ def aggregate(label):
     earned = defaultdict(float)
     mx = defaultdict(float)
     for gj in glob.glob(str(
-            PROJECT / f"runs/{label}/vertical_agent_selector/da-*/grade.json")):
+            PROJECT / f"results/{label}/vertical_agent_selector/da-*/grade.json")):
         d = json.load(open(gj))
         if d.get("grade_mode") in INFRA:
             continue

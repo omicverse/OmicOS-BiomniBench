@@ -12,7 +12,7 @@
         exists — just the grader call is redone). Needs `uv run` for the
         omicos_biomnibench package.
 
-A "label" is a run-id under runs/ — one per model (see bench_model.sh).
+A "label" is a run-id under results/ — one per model (see bench_model.sh).
 Means EXCLUDE the documented failure-case tasks (docs/failure-cases/) and
 EXCLUDE infra-failure cells, so the number reflects model capability only.
 
@@ -45,7 +45,7 @@ def failure_cases():
 def load(label):
     """label -> {task: (score, grade_mode)}"""
     rows = {}
-    for g in glob.glob(str(PROJECT / f"runs/{label}/vertical_agent_selector/da-*/grade.json")):
+    for g in glob.glob(str(PROJECT / f"results/{label}/vertical_agent_selector/da-*/grade.json")):
         t = os.path.basename(os.path.dirname(g))
         try:
             d = json.load(open(g))
@@ -133,7 +133,7 @@ def cmd_regrade(label):
         print(f"{label}: no judge_unavailable cells.")
         return
     for t in sorted(stale, key=tnum):
-        cell = PROJECT / f"runs/{label}/vertical_agent_selector/{t}"
+        cell = PROJECT / f"results/{label}/vertical_agent_selector/{t}"
         gp = cell / "grade.json"
         prior = json.loads(gp.read_text())
         ng = ob_grader.grade(rubric=tasks[t].rubric,

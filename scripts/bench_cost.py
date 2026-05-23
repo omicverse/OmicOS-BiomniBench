@@ -3,7 +3,7 @@
 
   python3 scripts/bench_cost.py [<label> ...]
 
-For each run label (a run-id under runs/, one per model) reports per-task
+For each run label (a run-id under results/, one per model) reports per-task
 tokens, NAIVE cost (no prompt caching) and CACHE-ADJUSTED cost.
 
 Why two numbers — a BiomniBench task is a long agent loop; every LLM call
@@ -80,7 +80,7 @@ def cost_per_task(label, pricing=PRICING):
     tot_in = tot_fresh = tot_out = 0
     n = 0
     for gj in glob.glob(str(
-            PROJECT / f"runs/{label}/vertical_agent_selector/da-*/grade.json")):
+            PROJECT / f"results/{label}/vertical_agent_selector/da-*/grade.json")):
         if json.load(open(gj)).get("grade_mode") in INFRA:
             continue
         tk = _cell_tokens(os.path.dirname(gj))
