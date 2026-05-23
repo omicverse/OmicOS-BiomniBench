@@ -179,7 +179,7 @@ OmicOS-BiomniBench/
 └── docs/
     ├── model-benchmarking.md           full sweep / compare / regrade workflow
     ├── grading-deviations.md           judge-swap deviation log
-    └── failure-cases/                  per-task benchmark-defect case studies (6 docs)
+    └── failure-cases/                  per-task benchmark-defect case studies (4 docs)
 ```
 
 ## What's NOT in this repo
