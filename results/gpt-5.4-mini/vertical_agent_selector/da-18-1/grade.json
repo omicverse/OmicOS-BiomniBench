@@ -1,0 +1,54 @@
+{
+  "run_id": "gpt-5.4-mini",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-18-1",
+  "paper": "18",
+  "correct": true,
+  "score": 0.72,
+  "grade_mode": "deepseek",
+  "final_answer": "Across the four receptor subtypes, the cohort shows a clear biological split:\n\n- **HR+/HER2-** is the most classic luminal pattern, with frequent **PIK3CA (41.1%)**, **GATA3 (17.5%)**, **CDH1 (18.7%)**, **MAP3K1 (9.0%)**, **ESR1 (8.5%)**, **AKT1 (6.3%)**, and **CCND1/FGFR1 gains**. This subtype looks endocrine-driven and enriched for PI3K-pathway and luminal-lineage alterations.\n- **HR+/HER2+** remains luminal but is more TP53-heavy (**45.4%**) and still carries substantial **PIK3CA (38.3%)** and **ERBB2 amplification (66.7%)**. It also shows recurrent **ESR1** mutations, consistent with therapy-selected endocrine resistance in a subset.\n- **HR-/HER2+** is the most HER2-amplified and TP53-driven HER2-positive group, with **ERBB2 amplification in 86.4%** and **TP53 mutations in 78.8%**. **NF1** is relatively enriched here.\n- **TNBC** is the most genomically aggressive and TP53-dominant subtype, with **TP53 mutations in 89.7%**, plus more **PTEN**, **RB1**, **NF1**, and **MYC gain** than the luminal groups.\n\nAt the cohort level, median nonsynonymous mutation burden was similar across groups (Kruskal-Wallis p = 0.092), so the main differences are not global TMB but rather **which drivers are altered** and **which copy-number events dominate**. The strongest subtype-defining CNA signal is **ERBB2 amplification in HER2-positive disease**, while **CCND1** and **FGFR1** gains are more luminal.\n\nIn short: **luminal subtypes are PIK3CA/GATA3/CDH1/MAP3K1/ESR1- and CCND1/FGFR1-driven; HER2-positive tumors are defined by ERBB2 amplification and high TP53 burden; TNBC is TP53-dominant with more RB1/PTEN/NF1/MYC involvement.**",
+  "final_text": "Selected agent: `bulk_rna_analyst`, because its `use_when` covers gene-level profiling across samples and differential landscape comparisons from omics matrices.",
+  "grader_notes": "The agent performed strong data integration and driver analysis, but TMB summary lacked IQR, ERBB2 mutation-amplification separation was incomplete, and the clinical interpretation missed the actionable ERBB2 mutation note, lowering three criteria to B.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 15,
+      "reason": "Correctly loaded all three datasets, handled comment lines, and linked samples to mutations and CNA."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 10,
+      "reason": "Used pre-labeled RECEPTOR_STATUS_PRIMARY to assign the four canonical subtypes correctly."
+    },
+    "criterion_3": {
+      "level": "B",
+      "score": 7,
+      "reason": "Computed medians and means but omitted inter-quartile ranges, providing only partial summary statistics."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 20,
+      "reason": "Mapped genes, counted mutations per subtype, and reported key driver frequencies like PIK3CA and TP53."
+    },
+    "criterion_5": {
+      "level": "B",
+      "score": 10,
+      "reason": "Quantified ERBB2 amplifications well but did not separate or report point mutation frequencies."
+    },
+    "criterion_6": {
+      "level": "B",
+      "score": 10,
+      "reason": "Provided a coherent biological summary but omitted the clinical relevance of rare ERBB2 mutations in HER2-negative disease."
+    },
+    "criterion_7": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results are traceable to the data, and interpretations are supported by real, identifiable references."
+    }
+  },
+  "error": null,
+  "elapsed_s": 240.49526870402042,
+  "tool_calls": 25,
+  "input_tokens": 1141669,
+  "output_tokens": 13551
+}

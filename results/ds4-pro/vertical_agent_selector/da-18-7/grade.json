@@ -1,0 +1,18 @@
+{
+  "run_id": "ds4-pro",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-18-7",
+  "paper": "18",
+  "correct": false,
+  "score": 0.0,
+  "grade_mode": "serve_failed",
+  "final_answer": "",
+  "final_text": "",
+  "grader_notes": "serve/turn failed",
+  "criteria": {},
+  "error": "RemoteProtocolError: peer closed connection without sending complete message body (incomplete chunked read)",
+  "elapsed_s": 2793.7707624149043,
+  "tool_calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0
+}

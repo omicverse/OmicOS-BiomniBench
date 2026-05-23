@@ -1,0 +1,64 @@
+{
+  "run_id": "mimo-v2.5",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-26-2",
+  "paper": "26",
+  "correct": true,
+  "score": 0.87,
+  "grade_mode": "deepseek",
+  "final_answer": "Cancer Dependency Map Analysis — BRCA Biomarker Discovery\n==========================================================\n\nOBJECTIVE:\nIdentify biomarkers statistically significant in BRCA when predicting\nTCGA patient-level DepMap scores, focusing on those present in patient\ndata but NOT manifesting in CCLE cell line models.\n\nMETHODOLOGY:\n- Normality likelihood-ratio test (LRT) on dependency-score distributions\n  (normal vs skew-normal fit, BH-FDR correction)\n- Per-gene dispersion (SSD) comparison between cohorts\n- Cohort: BRCA only (1,099 patients, 36 cell lines, 1,965 shared genes)\n- Consistent FDR < 0.05 threshold on both cohorts\n- Patient scores are PREDICTED (model-applied to tumor expression)\n\nRESULTS:\n- Selective dependencies in BRCA patients: 1,358 (of 1,962 genes)\n- Selective dependencies in BRCA cell lines: 230 (of 1,965 genes)\n- SHARED: 166 genes\n- PATIENT-SPECIFIC (in patients, NOT cell lines): 1,192 genes\n- Cell-line-specific: 64 genes\n\nTOP 20 PATIENT-SPECIFIC SELECTIVE DEPENDENCIES (by LRT):\n 1. SOX10   (LRT=519.2, FDR=1.2e-111) — transcription factor\n 2. PDCL3   (LRT=466.9, FDR=1.5e-100) — photoreceptor degeneration assoc.\n 3. SOX9    (LRT=424.6, FDR=1.6e-91)  — transcription factor, SSD_diff=22.4\n 4. UGCG    (LRT=423.5, FDR=2.0e-91)  — glucosylceramide synthase, druggable\n 5. SRPK1   (LRT=416.2, FDR=6.3e-90)  — kinase, druggable\n 6. ASCL1   (LRT=402.9, FDR=4.2e-87)  — transcription factor\n 7. FOXA2   (LRT=374.5, FDR=4.7e-81)  — forkhead TF\n 8. CDK4    (LRT=315.3, FDR=3.4e-68)  — CDK4/6 inhibitor target, SSD_diff=40.9\n 9. MYOD1   (LRT=314.7, FDR=4.1e-68)  — myogenic TF\n10. ZFAND5  (LRT=304.2, FDR=7.2e-66)  — zinc finger\n11. PAX3    (LRT=280.1, FDR=1.0e-60)  — paired box TF\n12. SPDEF   (LRT=279.2, FDR=1.5e-60)  — ETS-family TF\n13. RMI2    (LRT=272.1, FDR=4.8e-59)  — DNA repair\n14. GTF2H2  (LRT=270.1, FDR=1.3e-58)  — TFIIH complex\n15. SSB     (LRT=267.2, FDR=5.0e-58)  — La autoantigen\n16. SMARCE1 (LRT=250.2, FDR=2.4e-54)  — SWI/SNF chromatin, druggable\n17. RAPGEFL1(LRT=246.2, FDR=1.7e-53)  — Ras-GEF\n18. PEA15   (LRT=245.3, FDR=2.6e-53)  — phosphoprotein\n19. FLT3    (LRT=237.9, FDR=1.0e-51)  — receptor tyrosine kinase, druggable\n20. SUPT20H (LRT=233.3, FDR=9.8e-51)  — transcription elongation\n\nTOP 10 BY DISPERSION DIFFERENCE (SSD_pat − SSD_cl):\n 1. CCND1  (SSD_diff=94.3) — Cyclin D1, much wider patient spread\n 2. TP53   (SSD_diff=77.4) — p53, massive patient heterogeneity\n 3. CDK4   (SSD_diff=40.9) — cyclin-dependent kinase 4\n 4. ACO2   (SSD_diff=28.0) — aconitase 2, metabolic heterogeneity\n 5. SOX9   (SSD_diff=22.4) — transcription factor\n 6. EAF1   (SSD_diff=21.8) — ELL-associated factor 1\n 7. COPG1  (SSD_diff=21.0) — coatomer protein\n 8. MAGOH  (SSD_diff=18.8) — exon junction complex\n 9. SNAP23 (SSD_diff=17.9) — SNARE complex\n10. SUPT20H(SSD_diff=16.5) — transcription elongation\n\nDRUGGABLE PATIENT-SPECIFIC CANDIDATES (21 of top 50):\nCDK4 (CDK4/6 inhibitors: palbociclib, ribociclib),\nFLT3 (kinase inhibitors: midostaurin, gilteritinib),\nMAP2K1 (MEK inhibitors: trametinib),\nSRPK1 (kinase inhibitor target),\nNAMPT (NAMPT inhibitors: CHS-828, KPT-9274),\nHMGCR (statin target),\nCPT1A (fatty acid oxidation inhibitor),\nACSL4 (ferroptosis-linked),\nUGCG (glucosylceramide synthase inhibitor),\nSMARCE1 (SWI/SNF chromatin target),\nCHD1 (chromodomain helicase),\nRING1 (Polycomb complex),\nFANCI (DNA repair — PARP inhibitor sensitivity),\nSTAG1 (cohesin complex),\nGNB1 (G-protein signaling),\nSOX10, SOX9, ASCL1, FOXA2, PAX3, NFIB (transcription factors)\n\nKEY FINDINGS:\n- 1,192 genes show selective dependency in BRCA patients that are\n  completely absent from the 36 BRCA cell lines — a massive\n  \"cell-line blind spot.\"\n- Cell lines miss key oncogenic dependencies (CCND1, TP53, CDK4)\n  because they lack the patient population's heterogeneity.\n- Transcription factors (SOX10, SOX9, ASCL1, FOXA2) dominate the\n  patient-specific signal — their dependency is context-dependent\n  and poorly modeled by cell lines.\n- Metabolic dependencies (CPT1A, ACSL4, HMGCR, NAMPT) are\n  patient-enriched, reflecting tumor microenvironment heterogeneity.\n- 21 of the top 50 patient-specific dependencies are known\n  druggable targets.\n\nCAVEATS:\n- Patient scores are PREDICTED (expression → model → score), not\n  directly measured by CRISPR. Patient-specific hits may partly\n  reflect model behavior.\n- Only 36 BRCA cell lines were available — some \"patient-specific\"\n  signals may reflect cell-line underpowering.\n- The 1,192 patient-specific genes are a hypothesis list requiring\n  experimental validation.\n\nOUTPUT FILES:\n- trace.md (structured analytical trace)\n- outputs/.../selective_dependencies_patients_BRCA.csv\n- outputs/.../selective_dependencies_celllines_BRCA.csv\n- outputs/.../patient_specific_selective_dependencies_BRCA.csv\n- outputs/.../patient_vs_cellline_comparison_BRCA.csv",
+  "final_text": "Both required output files are present and non-empty. Here is a summary of the completed task:\n\n---\n\n**Agent selected:** `cancer_dependency_analyst` — its `When to use` explicitly covers \"DepMap/CCLE essentiality scores\" and \"patient-level predicted dependency scores\" with biomarker identification.\n\n**What was done:**\n\nThe analysis identified which genes show statistically significant selective dependency patterns in TCGA BRCA patients (n=1,099) that are absent in the matched CCLE BRCA cell line panel (n=36), using a normality-based likelihood ratio test (LRT) with FDR correction.\n\n**Key findings:**\n\n- **1,192 patient-specific selective dependencies** (FDR < 0.05) — genes with significantly skewed dependency-score distributions in patients but not in cell lines.\n- **166 shared** selective dependencies present in both cell lines and patients.\n- **230 cell-line selective dependencies** — only ~19% overlap with the patient set.\n\n**Top patient-specific biomarkers by LRT statistic:** SOX10 (LRT=519.2), PDCL3, SOX9, SRPK1, ASCL1, CDK4, FLT3, MAP2K1, NAMPT, HMGCR.\n\n**Top by patient heterogeneity:** CCND1 (SSD_diff=94.3), TP53 (77.4), CDK4 (40.9) — massive patient-side dispersion absent from cell lines.\n\n**21 druggable candidates** identified in the top 50, including CDK4/6 inhibitor targets, MEK inhibitors, and metabolic targets.\n\n**Output files:**\n- `./trace.md` — full structured analysis trace (12.9 KB)\n- `./answer.txt` — plain-text final summary (4.9 KB)\n- CSV result tables in `./outputs/5f8d7670-.../`",
+  "grader_notes": "The agent executed a rigorous analysis with correct statistical methods, data handling, and source grounding. However, it failed to identify PTPN11 as a biomarker, which is a specific requirement, resulting in a B for Criterion 7.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 15,
+      "reason": "Correctly implemented the Normality Likelihood Ratio Test with skew-normal alternative and BH-FDR correction, without statistical errors."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 5,
+      "reason": "Successfully loaded and processed CCLE and TCGA DepMap scores, stripping identifiers and handling duplicates, without reliance on expression data."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 13,
+      "reason": "Accurately classified distributions by interpreting LRT significance (FDR<0.05) to identify skewed (selective) dependencies."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 16,
+      "reason": "Computed NA-aware SSDs for all genes in both cohorts after proper gene alignment."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 8,
+      "reason": "Integrated Finan et al. druggable genome and DGIdb to filter top patient-specific dependencies into actionable targets."
+    },
+    "criterion_6": {
+      "level": "A",
+      "score": 11,
+      "reason": "Applied a consistent FDR<0.05 threshold to isolate genes significant in patients but not in cell lines, yielding 1,192 patient-specific candidates."
+    },
+    "criterion_7": {
+      "level": "B",
+      "score": 8,
+      "reason": "Did not include PTPN11 in the results, though other BRCA-related genes were identified, making this an incomplete finding per rubric."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 11,
+      "reason": "Precisely filtered both cohorts for BRCA samples using lineage metadata, resulting in 1,099 patients and 36 cell lines."
+    },
+    "criterion_9": {
+      "level": "A",
+      "score": 0,
+      "reason": "All numerical results derive from the analysis, identifiers are from provided data, and biological claims are supported by real, identifiable references."
+    }
+  },
+  "error": null,
+  "elapsed_s": 449.0295890639536,
+  "tool_calls": 34,
+  "input_tokens": 1300296,
+  "output_tokens": 20405
+}

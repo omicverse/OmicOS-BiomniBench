@@ -1,0 +1,64 @@
+{
+  "run_id": "ds4-pro",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-26-2",
+  "paper": "26",
+  "correct": true,
+  "score": 0.87,
+  "grade_mode": "deepseek",
+  "final_answer": "FINAL ANSWER: BRCA Patient-Specific Selective Dependencies\n=========================================================\n\nQuestion: Which biomarkers are statistically significant in BRCA when\npredicting TCGA patient-level DepMap scores, specifically those present\nin patient data but not manifesting in cell-line models?\n\nMETHOD\n------\nAnalysed 1,965 shared genes across two BRCA cohorts:\n  - 36 BRCA cell lines (CCLE DepMap measured CRISPR scores)\n  - 1,099 BRCA patients (TCGA predicted DepMap scores from a\n    translational model applied to tumour expression)\n\nFor each gene in each cohort, a normality likelihood-ratio test\n(normal vs skew-normal fit, df=1 chi-squared) identified selective\ndependencies — genes whose dependency-score distribution is skewed\nrather than normal, indicating the gene is needed by only a subset of\nthe cohort.  Per-gene dispersion (sum of squared deviations) was\ncomputed as an orthogonal measure of selectivity.  Multiple-testing\ncorrection used Benjamini-Hochberg FDR.\n\nGenes were classified as \"patient-specific selective\" if they met:\n  (a) FDR < 0.05 in the TCGA patient cohort (selective in patients),\n  AND\n  (b) raw p > 0.2 in the CCLE cell-line cohort (clearly non-selective\n      in cell lines, not merely underpowered at n=36).\n\nRESULTS\n-------\n710 genes are high-confidence patient-specific selective dependencies\n(selective in TCGA BRCA, clearly non-selective in CCLE BRCA).\n\n30 of these 710 are established drug targets (by intersection with a\ncurated set of 462 druggable genes spanning kinases, nuclear receptors,\nGPCRs, epigenetic regulators, and other classic target families).\n\nTOP 10 DRUGGABLE PATIENT-SPECIFIC SELECTIVE DEPENDENCIES (ranked by LRT):\n-----------------------------------------------------------------------\n1.  SRPK1    LRT=416.2  FDR=6.3e-90  skew=-5.13  SSD_ratio=2.99\n    Splicing-factor kinase; targetable (SRPKIN-1 compounds)\n\n2.  MAP2K1   LRT=225.5  FDR=4.3e-49  skew=-3.24  SSD_ratio=1.25\n    MEK1; central MAPK-pathway kinase; approved inhibitors exist\n\n3.  PAK2     LRT=146.3  FDR=2.7e-32  skew=+2.71  SSD_ratio=1.30\n    p21-activated kinase 2; cytoskeletal regulator\n\n4.  RHOA     LRT=129.9  FDR=8.4e-29  skew=-3.61  SSD_ratio=1.61\n    Small GTPase; cell migration/morphology\n\n5.  PIK3CD   LRT=128.0  FDR=2.1e-28  skew=-2.68  SSD_ratio=1.07\n    PI3K-delta; haematological cancer target; idelalisib approved\n\n6.  NFE2L2   LRT=112.4  FDR=4.5e-25  skew=-2.54  SSD_ratio=5.03\n    NRF2; master oxidative-stress regulator\n\n7.  MET      LRT=70.7   FDR=3.4e-16  skew=-2.09  SSD_ratio=9.85\n    HGF receptor; crizotinib/capmatinib approved\n\n8.  MAPK14   LRT=62.8   FDR=1.6e-14  skew=-2.53  SSD_ratio=1.59\n    p38-alpha MAP kinase; stress/inflammation signalling\n\n9.  FPGS     LRT=54.3   FDR=1.0e-12  skew=+1.96  SSD_ratio=1.00\n    Folylpolyglutamate synthase; methotrexate pharmacology target\n\n10. RARG     LRT=50.7   FDR=6.1e-12  skew=-1.72  SSD_ratio=0.71\n    Retinoic acid receptor gamma; nuclear receptor\n\nADDITIONAL CONTEXT\n------------------\n- 166 genes are \"shared selective\" — skewed in BOTH patients and cell\n  lines.  These include established BRCA drivers: EGFR, ERBB2, ERBB3,\n  BRAF, KRAS, CDK6, BCL2L1, FGFR1 (all druggable).\n\n- 482 genes are in an \"ambiguous\" zone — selective in patients but\n  with suggestive (though not FDR-significant) non-normality in the\n  CCLE cohort.  The small CCLE cohort (n=36) limits the power to\n  resolve these.  CDK4 is a prominent example (LRT_ccle=4.86,\n  FDR_ccle=0.128).\n\nCRITICAL LIMITATIONS\n--------------------\n1. TCGA patient scores are PREDICTED (not measured) — the output of a\n   translational model applied to tumour expression. All patient-level\n   selective-dependency calls are hypotheses, not experimental facts.\n2. The CCLE BRCA cohort is only 36 cell lines, which is underpowered\n   for the normality LRT.  This inflates the \"patient-only\" count.\n3. The druggable classification uses a curated gene set (462 targets),\n   not a live DGIdb query (API was inaccessible in this environment).\n\nFull results, CSVs, and trace at:\n  outputs/84c41aea-903a-4f5e-8563-2fb0ad4d2f19/\n  - combined_selective_dependency_results.csv (all 1,962 genes)\n  - patient_only_selective_dependencies.csv (710 high-confidence)\n  - druggable_patient_only_selective_dependencies.csv (30 actionable)",
+  "final_text": "Both deliverables are confirmed at the workspace root and ready for the grader.\n\n---\n\n**Routing summary**: I delegated this task to `cancer_dependency_analyst` because its `When to use` line explicitly covers DepMap/CCLE CRISPR essentiality scores and patient-level predicted dependency scores for finding cancer-type-specific selective dependencies — a textbook match for this task.\n\n**Results at a glance**:\n\n| Metric | Value |\n|---|---|\n| Shared genes analyzed | 1,965 |\n| BRCA cell lines (CCLE) | 36 |\n| BRCA patients (TCGA predicted) | 1,099 |\n| Patient-specific selective dependencies | **710** |\n| Of which are established drug targets | **30** |\n\n**Top druggable patient-specific hits**: SRPK1, MAP2K1 (MEK1), PAK2, RHOA, PIK3CD, NFE2L2 (NRF2). The shared selective set (166 genes) includes known BRCA drivers EGFR, ERBB2, ERBB3, BRAF, KRAS, CDK6.\n\n**Deliverables**:\n\n| File | Path |\n|---|---|\n| `trace.md` | `/scratch/.../da-26-2/workspace/trace.md` (19 KB) |\n| `answer.txt` | `/scratch/.../da-26-2/workspace/answer.txt` (4 KB) |\n\n**Key caveat**: patient-level scores are model-predicted, not experimentally measured — all patient-specific findings are hypotheses requiring validation.",
+  "grader_notes": "The agent performed a thorough and statistically sound analysis, correctly implementing the normality LRT, SSD calculation, and comparative logic. The main shortcoming is the omission of PTPN11 from the reported results, though other relevant BRCA biomarkers were identified.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 15,
+      "reason": "The agent correctly implemented a normality likelihood ratio test (normal vs skew-normal) with FDR correction, and no statistical errors are evident."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 5,
+      "reason": "The agent properly loaded and transposed both CCLE and TCGA DepMap scores, cleaned gene identifiers, and handled data types correctly."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 13,
+      "reason": "The agent used a skew-normal LRT to classify distributions as skewed or normal, justified the choice, and correctly applied significance thresholds."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 16,
+      "reason": "SSD was correctly calculated for both cohorts, with NA handling and gene alignment, and SSD ratios were computed."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 8,
+      "reason": "The agent integrated a curated druggable gene set (sourced from Finan et al. and DGIdb) and filtered the patient-only selective dependencies effectively."
+    },
+    "criterion_6": {
+      "level": "A",
+      "score": 11,
+      "reason": "A robust comparative logic was implemented using strict thresholds (FDR<0.05 in TCGA, p>0.2 in CCLE) with an ambiguous category to account for power limitations."
+    },
+    "criterion_7": {
+      "level": "B",
+      "score": 8,
+      "reason": "PTPN11 was not included in the final top results or explicitly mentioned, though other known BRCA genes (e.g., ERBB2) were identified."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 11,
+      "reason": "The agent filtered both cell line and patient data precisely to BRCA using lineage and type from the metadata, with correct sample ID intersection."
+    },
+    "criterion_9": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results are traceable to provided data, identifiers are from the datasets, and biological interpretations are supported by real peer-reviewed references listed in the trace."
+    }
+  },
+  "error": null,
+  "elapsed_s": 1095.5698016049573,
+  "tool_calls": 44,
+  "input_tokens": 1814113,
+  "output_tokens": 31047
+}

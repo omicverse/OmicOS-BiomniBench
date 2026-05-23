@@ -1,0 +1,69 @@
+{
+  "run_id": "gpt-5.5",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-10-1",
+  "paper": "10",
+  "correct": true,
+  "score": 0.94,
+  "grade_mode": "deepseek",
+  "final_answer": "Using the supplied SaPS/PdPS/NoPS labels, PS-Self and PS-Part proteins showed clearly different sequence-composition signatures.\n\nWhole-sequence composition: SaPS proteins were more strongly enriched for low-complexity/disorder-associated residues than PdPS. In the curated benchmark, SaPS was most enriched versus NoPS for G (1.44-fold), P (1.30-fold), Q (1.25-fold), T (1.20-fold), and S (1.20-fold). The human hSaPS set replicated this pattern with P (1.26-fold), G (1.25-fold), Q (1.20-fold), and S (1.16-fold). PdPS enrichment was weaker and shifted toward charged/polar residues: curated PdPS was enriched for Q (1.15-fold), P (1.10-fold), R (1.10-fold), K (1.08-fold), and E (1.08-fold), while hPdPS was enriched for R (1.20-fold), K (1.18-fold), Q (1.15-fold), E (1.15-fold), and P (1.08-fold).\n\nIDR-restricted composition sharpened the difference. SaPS IDRs were enriched for aromatic stickers and low-complexity spacers: curated SaPS IDRs had Y 1.81-fold, F 1.78-fold, G 1.36-fold, Q 1.29-fold, and N 1.23-fold versus NoPS IDRs; hSaPS IDRs had Y 2.60-fold, F 1.43-fold, Q 1.31-fold, and N 1.17-fold. PdPS IDRs showed more Y/R/K-associated signal: curated PdPS IDRs had Y 1.42-fold, R 1.18-fold, G 1.16-fold, Q 1.06-fold, and P 1.06-fold; hPdPS IDRs had Y 1.42-fold, R 1.31-fold, N 1.20-fold, K 1.12-fold, and W 1.11-fold.\n\nIDR architecture also differed. SaPS had longer and denser IDRs than PdPS and NoPS: in the curated set the median IDR length was 151 aa for SaPS, 78.5 aa for PdPS, and 20 aa for NoPS; mean IDR fraction was 0.311, 0.216, and 0.110, respectively. Human labels showed the same ordering: mean IDR fraction was 0.326 for hSaPS, 0.267 for hPdPS, and 0.138 for hNoPS.\n\nPredictor ROC-AUCs, computed separately for each mechanism, showed that all available predictors worked better for SaPS than PdPS. In the curated benchmark, SaPS-vs-NoPS AUCs were PLAAC 0.834, PScore 0.831, and catGRANULE 0.817. PdPS-vs-NoPS AUCs were lower: catGRANULE 0.706, PScore 0.662, and PLAAC 0.644. The human proteome labels replicated this: hSaPS-vs-hNoPS AUCs were PLAAC 0.831, catGRANULE 0.813, and PScore 0.813; hPdPS-vs-hNoPS AUCs were catGRANULE 0.726, PScore 0.689, and PLAAC 0.640.\n\nFuzDrop could not be evaluated because the provided `sequence_prediction_filtered.xlsx` file did not contain a FuzDrop score column. This is a data-availability limitation rather than evidence about FuzDrop performance.\n\nOverall, PS-Self proteins carry stronger intrinsic low-complexity, IDR, and aromatic-sticker features, making them easier for sequence predictors to detect. PS-Part proteins have weaker intrinsic sequence signatures and relatively more charged/basic residue signal, consistent with partner-dependent condensation where interaction partners contribute part of the multivalent phase-separation drive. Predictor scores should be interpreted as propensities, not experimental proof of phase separation.",
+  "final_text": "Selected `phase_separation_analyst` because the request directly matches LLPS/SaPS/PdPS sequence-feature comparison and phase-separation predictor benchmarking.\n\nThe specialist completed the task and wrote the required files in the working directory:\n\n- `trace.md`\n- `answer.txt`\n\nThey also verified both files exist.",
+  "grader_notes": "The agent performed a comprehensive analysis with only a minor shortfall in not deriving an IDR-based amino-acid ordering, but otherwise met all criteria at the highest level.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 8,
+      "reason": "Correctly loads data, confirms identifiers, verifies columns, reports dimensions, and checks missing values."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 12,
+      "reason": "Correctly defines positive and negative sets with mutual exclusivity, uses NoPS flags, and documents sizes."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 12,
+      "reason": "Correctly computes pooled amino-acid fractions with proper normalization and verification."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 10,
+      "reason": "Correctly computes fold-change with stabilization and consistent ordering, includes human proteome sets."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 12,
+      "reason": "Uses defensible physicochemical grouping order consistently across analyses."
+    },
+    "criterion_6": {
+      "level": "B",
+      "score": 6,
+      "reason": "Extracts IDR segments correctly and computes IDR frequencies, but does not derive amino-acid ordering from IDR frequencies; uses property-based order instead."
+    },
+    "criterion_7": {
+      "level": "A",
+      "score": 12,
+      "reason": "Correctly replicates analysis on human proteome sets with same methods and compares patterns."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 16,
+      "reason": "Computes AUC separately for each predictor and task, handles missing values, compares performance, and notes absence of FuzDrop."
+    },
+    "criterion_9": {
+      "level": "A",
+      "score": 6,
+      "reason": "Provides clear evidence-based summary linking composition patterns to predictor performance with plausible biological reasoning."
+    },
+    "criterion_10": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results and identifiers are traceable to provided data, and biological interpretations are supported by real peer-reviewed references."
+    }
+  },
+  "error": null,
+  "elapsed_s": 493.2167883469956,
+  "tool_calls": 20,
+  "input_tokens": 751434,
+  "output_tokens": 19643
+}

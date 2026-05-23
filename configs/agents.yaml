@@ -1,0 +1,31 @@
+# Agents under evaluation on BiomniBench-DA.
+#
+# Strategy: `vertical_agent_selector` as the single entrypoint. The
+# selector calls omicos-core's `agent_select` tool to score the worker
+# roster (configured via `team_members` in models.yaml) against the
+# task instruction, picks the top candidate, and `call_agent`s a
+# sidechain turn against that worker. The worker writes `trace.md` +
+# `answer.txt` to the workspace; control returns to the selector which
+# relays.
+#
+# Why this beats the previous single-generalist setup:
+#   * BiomniBench tasks span sc, bulk, metab, epi, phylo — each with a
+#     better specialist than `omicverse_omni`.
+#   * Hand-classifying 50 tasks ahead of time loses information that's
+#     in the instruction itself (e.g. "co-expression network" routes
+#     differently from a generic "differential-expression" tag).
+#   * The selector's choice is logged per-cell, so post-hoc analysis
+#     can attribute score deltas to the routing decision.
+#
+# To revert to single-agent (e.g. for debugging the worker layer):
+#   1. Replace `vertical_agent_selector` below with the worker id.
+#   2. Drop the `team_members` block from `configs/models.yaml`.
+
+agents:
+  - id: vertical_agent_selector
+    tier: community
+    rationale: |
+      omicos-core PR #178 routing agent. Reads each task instruction,
+      calls `agent_select` over the team_members roster (configured in
+      models.yaml), and delegates to the top-scoring worker via
+      `call_agent`. The worker writes the contracted output files.

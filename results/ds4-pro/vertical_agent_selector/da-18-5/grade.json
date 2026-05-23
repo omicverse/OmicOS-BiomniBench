@@ -1,0 +1,59 @@
+{
+  "run_id": "ds4-pro",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-18-5",
+  "paper": "18",
+  "correct": true,
+  "score": 0.82,
+  "grade_mode": "deepseek",
+  "final_answer": "The cumulative frequency of MAPK pathway alterations in post-hormonal therapy HR+HER2- breast tumors is 52.8% (372 of 705 samples).\n\nThis is defined as the fraction of tumors harboring at least one qualifying MAPK pathway alteration: a non-synonymous somatic mutation in a MAPK pathway gene, a high-level amplification (CNA = 2) in an activating MAPK gene (RTK, RAS, RAF, MEK, ERK, or downstream effector), or a homozygous deep deletion (CNA = -2) in a negative regulator of the pathway (NF1, RASA1, SPRED1, DUSP4, CBL).\n\nKey components of this frequency:\n- MAPK non-synonymous mutations: 228/705 (32.3%)\n- MAPK amplifications (activating genes): 213/705 (30.2%)\n- MAPK deep deletions (inactivating genes): 12/705 (1.7%)\n\nThe single most frequent MAPK alteration is FGFR1 amplification (122/705, 17.3%), followed by MYC amplification (63/705, 8.9%), ERBB2 mutation (38/705, 5.4%), and NF1 inactivation (42/705, 6.0%).\n\nThis 52.8% cumulative frequency is significantly higher than the 35.6% observed in treatment-naive HR+HER2- tumors (OR = 2.02, p < 0.0001, Fisher's exact test), consistent with acquisition or selection of MAPK pathway alterations under the selective pressure of endocrine therapy.\n\nMAPK pathway alterations are not mutually exclusive with ESR1 mutations (the canonical endocrine resistance mechanism; Fisher's p = 0.56). Among the 574 ESR1-wildtype tumors in the cohort, 306 (53.3%) still harbor MAPK alterations, indicating that MAPK pathway activation represents a common and independent mechanism of endocrine resistance that operates in parallel to ESR1 mutation.",
+  "final_text": "The `tabular_genomics_analyst` completed the analysis. Here are the results:\n\n---\n\n## Final Answer\n\n**The cumulative frequency of MAPK pathway alterations in post-hormonal therapy HR+HER2− tumors is 52.8% (372/705 samples).**\n\n### How this was determined\n\n| Filtering step | Samples | Change |\n|---|---|---|\n| All samples | 1,918 | — |\n| HR+ | 1,530 | −388 |\n| HR+ HER2− | 1,362 | −168 |\n| Post-hormonal therapy | **705** | −657 |\n\nWithin these 705 samples, a sample counts as MAPK-altered if it carries ≥1 of:\n- **Non-synonymous mutation** in a MAPK pathway gene (46 panel genes): 228 samples\n- **High-level amplification** (CNA=2) in activating MAPK genes (RTK, RAS, RAF, MEK, ERK, downstream effectors): 213 samples\n- **Homozygous deep deletion** (CNA=−2) in negative regulators (NF1, RASA1, SPRED1, DUSP4, CBL): 12 samples\n\n**Union = 372/705 (52.8%).**\n\n### Key context for endocrine resistance\n\n- The 52.8% in post-HT tumors is significantly higher than **35.6%** in treatment-naive HR+HER2− tumors (OR=2.02, p<0.0001).\n- **NF1 inactivation** (6.0% vs 1.8%, q=0.0035) and **FGFR1 amplification** (17.3% vs 10.8%, q=0.014) are significantly enriched post-HT.\n- MAPK alterations are **not mutually exclusive with ESR1 mutations** (p=0.56) — 53.3% of ESR1-wildtype tumors still harbor MAPK alterations, indicating independent parallel resistance mechanisms.\n\n### Output files written\n\n- `trace.md` — Full analysis trace in the workspace root\n- `answer.txt` — Plain-text final answer in the workspace root\n- `outputs/db45c5ea-fe20-4c5d-99ea-6716ad7c7eff/` — Supporting figures\n\n**Routing audit:** Selected `tabular_genomics_analyst` because its `When to use` line explicitly covers \"MAF/突变表 —— 要做...体细胞突变的频率/TMB/富集/共现分析\", which matches this task of computing cumulative alteration frequency from a MAF table + CNA matrix + clinical cohort.",
+  "grader_notes": "The agent performs thorough sample selection, gene set definition, alteration identification, frequency computation, and mutual exclusivity testing, with solid source grounding. Minor shortcomings: the final report does not explicitly state co-occurring events are rare (as per rubric's A expectation for criterion 6), and interpretation lacks discussion of therapeutic implications (criterion 7).",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 5,
+      "reason": "Correctly restricts to HR+/HER2- and divides into treatment-naive (primary) and post-therapy (metastatic) groups with clear rationale and counts."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 15,
+      "reason": "Defines a comprehensive MAPK gene set covering RTKs, RAS/RAF/MEK/ERK, negative regulators (including NF1), and effectors, with justification for inclusion and correct alteration rules."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 15,
+      "reason": "Identifies all mutation and copy-number events correctly and constructs a proper union of unique samples with any MAPK alteration."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 15,
+      "reason": "Calculates frequencies for naive vs post-therapy and ESR1-mutated vs wild-type groups, reporting both counts and percentages."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 15,
+      "reason": "Constructs contingency table and performs Fisher's exact test, reporting a p-value of 0.56 for mutual exclusivity between MAPK and ESR1."
+    },
+    "criterion_6": {
+      "level": "B",
+      "score": 10,
+      "reason": "Reports all required counts, frequencies, and p-values but does not explicitly state that co-occurring ESR1 and MAPK events are rare (as expected in the A-level description), instead noting they are not mutually exclusive."
+    },
+    "criterion_7": {
+      "level": "B",
+      "score": 7,
+      "reason": "Interprets MAPK activation as an independent parallel resistance mechanism but lacks discussion of therapeutic implications and does not claim mutual exclusivity (matching the data)."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results are traceable to the provided data files, identifiers come from the dataset, and biological interpretations are supported by real peer-reviewed references (author, year, journal)."
+    }
+  },
+  "error": null,
+  "elapsed_s": 847.5554164339555,
+  "tool_calls": 33,
+  "input_tokens": 1534205,
+  "output_tokens": 27238
+}

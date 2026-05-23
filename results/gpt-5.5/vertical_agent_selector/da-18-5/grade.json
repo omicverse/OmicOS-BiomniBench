@@ -1,0 +1,59 @@
+{
+  "run_id": "gpt-5.5",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-18-5",
+  "paper": "18",
+  "correct": true,
+  "score": 0.74,
+  "grade_mode": "deepseek",
+  "final_answer": "Using the sequenced-sample HR+/HER2- post-treatment cohort and a focused MAPK/ERK alteration definition (non-synonymous mutation in EGFR/ERBB/RAS/RAF/MEK/negative-regulator genes, high-level amplification of activating MAPK genes, or deep deletion of MAPK negative regulators), 149 of 705 post-hormonal-therapy HR+HER2- tumors were MAPK pathway-altered, for a cumulative frequency of 21.1%.",
+  "final_text": "Selected `tabular_genomics_analyst` because its scope covers MAF/CNA cohort-level somatic alteration frequency analysis.\n\nThe task is complete. The required files were written and verified:\n\n- `trace.md`\n- `answer.txt`\n\nFinal result: **149 of 705 post-hormonal-therapy HR+HER2- tumors had MAPK pathway alterations, for a cumulative frequency of 21.1%.**",
+  "grader_notes": "The agent correctly performed core data processing and statistical tests but missed reporting some required frequencies and underdelivered on the biological interpretation, resulting in A grades for most criteria but B for frequency completeness, results reporting, and interpretation.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 5,
+      "reason": "Correctly restricted to HR+/HER2- samples using HR_STATUS and OVERALL_HER2_STATUS, and classified therapy groups via SAMPLE_SITE with clear explanation."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 15,
+      "reason": "Defined a comprehensive MAPK gene set that includes all required genes (ERBB2, KRAS, HRAS, BRAF, MAP2K1, ERBB3, NF1, EGFR) plus additional MAPK pathway members, with justification provided."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 15,
+      "reason": "Correctly identified non-synonymous mutations, high-level amplifications, and deep deletions for each gene, and constructed a proper union of unique altered samples."
+    },
+    "criterion_4": {
+      "level": "B",
+      "score": 7,
+      "reason": "Calculated frequencies for naive and post-therapy groups, but did not explicitly compute or report the MAPK alteration frequency in ESR1-wild-type post-therapy tumors."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 15,
+      "reason": "Constructed a contingency table, performed Fisher's exact test, and reported the p-value for mutual exclusivity between MAPK alterations and ESR1 mutations."
+    },
+    "criterion_6": {
+      "level": "B",
+      "score": 10,
+      "reason": "Provided counts, some frequencies, and p-value for naive/post comparison, but omitted the percentage of ESR1-wild-type tumors with MAPK alterations and did not fully summarize all key findings in the final answer."
+    },
+    "criterion_7": {
+      "level": "B",
+      "score": 7,
+      "reason": "Offered a general interpretation about MAPK activation as an endocrine-resistance route, but did not discuss therapeutic implications or clearly state the relationship with ESR1 (lack of exclusivity was noted but not elaborated)."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results are traceable to provided data; gene identifiers are from the dataset; statistical methods are correctly named; biological interpretations are supported by real citations with DOIs."
+    }
+  },
+  "error": null,
+  "elapsed_s": 357.9506240969058,
+  "tool_calls": 18,
+  "input_tokens": 720325,
+  "output_tokens": 17722
+}

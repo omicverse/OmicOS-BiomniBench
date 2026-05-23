@@ -1,0 +1,59 @@
+{
+  "run_id": "mimo-v2.5-pro",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-18-5",
+  "paper": "18",
+  "correct": false,
+  "score": 0.66,
+  "grade_mode": "deepseek",
+  "final_answer": "Cumulative Frequency of MAPK Pathway Alterations in Post-Hormonal Therapy HR+HER2- Breast Cancers\n====================================================================================================\n\nANSWER: 44.1% (336 of 762 tumors)\n\nSummary\n-------\nIn this MSK-IMPACT genomic profiling cohort from \"The Genomic Landscape of Endocrine-Resistant Advanced Breast Cancers\" (Razavi et al., 2018, Cancer Cell), the cumulative frequency of MAPK pathway alterations in post-hormonal therapy HR+HER2- tumors is 44.1%.\n\nCohort Definition\n-----------------\n- HR+HER2-: RECEPTOR_STATUS_PRIMARY == \"HR+/HER2-\" (n = 1,422 of 1,918 total)\n- Post-hormonal therapy: All non-treatment-naive samples (metastatic sites + post-treatment primaries), n = 762\n- Treatment-naive comparison: HR+HER2- primaries with SAMPLE_SITE == \"Treatment Naive Primary\", n = 660\n\nMAPK Gene Set (29 genes)\n------------------------\nRTK upstream (14): EGFR, ERBB2, FGFR1, FGFR2, FGFR3, FGFR4, PDGFRA, PDGFRB, KIT, MET, IGF1R, ALK, ROS1, RET\nRAS (3): KRAS, NRAS, HRAS\nRAF (3): BRAF, RAF1, ARAF\nMEK (2): MAP2K1, MAP2K2\nERK (2): MAPK1, MAPK3\nNegative regulators (5): NF1, PTPN11, SOS1, RASA1, SPRED1\n\nAlteration Criteria\n-------------------\n- Activating genes: non-synonymous mutations OR copy-number amplification (CNA >= 1)\n- Negative regulators: non-synonymous mutations OR deep deletion (CNA = -2)\n- Non-synonymous classes: Missense, Nonsense, Frame_Shift_Del/Ins, Splice_Site, In_Frame_Del/Ins, Translation_Start_Site, Nonstop_Mutation\n\nKey Numbers\n-----------\nPost-treatment HR+HER2- with ANY MAPK alteration: 336/762 = 44.1%\n  - Mutations only: 198/762 = 26.0%\n  - CNA only: 138/762 = 18.1%\n  - Both: 54/762 = 7.1%\n\nTreatment-naive HR+HER2- comparison: 180/660 = 27.3%\nEnrichment test: OR = 2.10, Fisher's exact p = 4.20e-11\n\nTop Individual MAPK Genes\n--------------------------\nFGFR1: 120/762 = 15.7% (mostly amplification)\nERBB2: 58/762 = 7.6% (mutations + amplification)\nNF1:   54/762 = 7.1% (mutations + deep deletion)\nIGF1R: 35/762 = 4.6%\nFGFR2: 28/762 = 3.7%\n\nCo-occurrence with Established Drivers\n--------------------------------------\nMAPK vs PIK3CA: OR = 1.25, p = 0.152 (independent, not mutually exclusive)\nMAPK vs ESR1:  OR = 0.61, p = 0.023 (significant mutual exclusivity)\n\nBiological Interpretation\n-------------------------\nMAPK pathway alterations are present in nearly half of post-hormonal therapy HR+HER2- tumors and are significantly enriched compared to treatment-naive primaries (OR = 2.1). The mutual exclusivity with ESR1 mutations (the canonical endocrine-resistance driver at 14.7%) supports MAPK activation as an alternative resistance mechanism -- tumors employ either ESR1 ligand-domain mutations OR MAPK cascade activation, but less commonly both. FGFR1 amplification (15.7%) is the dominant individual event, consistent with published evidence for FGFR signaling as an endocrine-therapy escape route.",
+  "final_text": "The analysis is complete. The `tabular_genomics_analyst` delegated agent produced both required deliverables.\n\n**Routing rationale**: The task involves somatic mutation frequency and pathway aggregation on a clinical/genomic data table -- exactly the scope of `tabular_genomics_analyst` (\"体细胞突变的频率 / TMB / 富集 / 共现 / 通路聚合\"). This is not a bulk RNA-seq differential-expression task (no expression matrix), not a GWAS/eQTL task, and not a variant pathogenicity task.\n\n**Key result**: The cumulative frequency of MAPK pathway alterations in post-hormonal therapy HR+HER2- tumors is **44.1% (336/762 tumors)**. This represents a significant enrichment compared to treatment-naive tumors (27.3%, OR=2.10, p=4.20e-11), and the alterations are largely mutually exclusive with ESR1 mutations, supporting MAPK activation as an alternative endocrine-resistance mechanism.\n\n**Generated files**:\n- `trace.md` — Full analytical trace with Objective, Data Sources, Approach (8 steps with code), Results, and References\n- `answer.txt` — Plain-text final answer with summary statistics",
+  "grader_notes": "Agent correctly selected cohort, built a union of MAPK alterations, performed mutual exclusivity tests, and grounded work in data and references. However, omission of ERBB3 in gene set, failure to report ESR1-wild-type frequency, and missing therapeutic implications in interpretation limit completeness.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 5,
+      "reason": "Correctly identified HR+/HER2- samples using RECEPTOR_STATUS_PRIMARY and defined therapy groups with clear explanation."
+    },
+    "criterion_2": {
+      "level": "B",
+      "score": 7,
+      "reason": "Defined comprehensive MAPK set but omitted ERBB3 mutation from the list specified in the rubric."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 15,
+      "reason": "Correctly identified mutations and CNAs, and built union of altered samples without double-counting."
+    },
+    "criterion_4": {
+      "level": "B",
+      "score": 7,
+      "reason": "Calculated frequencies for naive and post-therapy groups but did not explicitly report frequency for ESR1-wild-type post-therapy tumours."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 15,
+      "reason": "Performed Fisher's exact test for mutual exclusivity with ESR1 and reported p-value."
+    },
+    "criterion_6": {
+      "level": "B",
+      "score": 10,
+      "reason": "Reported counts/frequencies for main comparison but omitted ESR1-wild-type percentage."
+    },
+    "criterion_7": {
+      "level": "B",
+      "score": 7,
+      "reason": "Explained alternative resistance mechanism but lacked explicit discussion of therapeutic implications."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results are traceable to data files, and interpretations cite real identifiable references."
+    }
+  },
+  "error": null,
+  "elapsed_s": 599.671168523957,
+  "tool_calls": 33,
+  "input_tokens": 1462322,
+  "output_tokens": 27108
+}

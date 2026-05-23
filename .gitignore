@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Local environment / secrets
+bench-env.sh
+.env
+.envrc
+.claude/
+
+# Runtime outputs — regeneratable, not part of the repo
+runs/
+trajectories/
+data/
+fixtures/
+logs/
+*.log
+*.out
+nohup.out
+
+# uv lockfile-related
+uv.lock
+
+# Build / cache
+.cache/
+.local/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

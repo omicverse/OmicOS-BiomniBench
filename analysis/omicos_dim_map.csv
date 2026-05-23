@@ -1,0 +1,356 @@
+task,criterion,dimension,A_points,title
+da-1-3,1,data handling,13,Tissue-Compartment and Baseline Filtering
+da-1-3,2,method selection,13,Cell Subtype Distribution Table Construction
+da-1-3,3,statistical rigor,16,Tissue-Enrichment Metric Computation
+da-1-3,4,source reliability,14,Enrichment Metric Interpretation and Biological Meaning
+da-1-3,5,statistical rigor,13,Tumor Enrichment Ranking and Identification of Top Enriched Subpopulations
+da-1-3,6,method selection,16,Strict Tumor-Specificity Filtering Logic
+da-1-3,7,biological interpretation,9,Biological Annotation of Key Tumor-Specific Subpopulations
+da-1-3,8,biological interpretation,6,Immunological Interpretation and Translational Implications for Tumor-Specific Therapeutic Targeting
+da-1-3,9,source reliability,0,Source Reliability
+da-1-4,1,statistical rigor,16,Baseline Tumor Filtering with Predictive Validity Rationale
+da-1-4,2,method selection,13,Patient-Level Cell Subtype Count Matrix Construction
+da-1-4,3,method selection,19,Proportion Normalization and Outcome Data Merging
+da-1-4,4,statistical rigor,11,Rare Cell Type Filtering and Zero-Variance Handling
+da-1-4,5,statistical rigor,16,Batch Correlation Analysis Across Cell Subtypes
+da-1-4,6,statistical rigor,16,Accuracy of Top Positive and Negative Correlation Identification
+da-1-4,7,biological interpretation,9,Biological Interpretation of Correlation Directionality and Clinical Implications
+da-1-4,8,source reliability,0,Source Reliability
+da-10-1,1,data handling,8,Data Loading and Schema Verification
+da-10-1,2,method selection,12,Dataset Construction and Sample Definitions
+da-10-1,3,statistical rigor,12,Amino-Acid Composition Frequency Computation
+da-10-1,4,statistical rigor,10,Fold-Change Computation Versus NoPS
+da-10-1,5,data handling,12,Property-Based Amino-Acid Ordering and Grouping
+da-10-1,6,statistical rigor,12,IDR-Based Amino-Acid Ordering
+da-10-1,7,statistical rigor,12,Human Proteome Analysis Replication
+da-10-1,8,data handling,16,Predictor Performance Evaluation Using AUC
+da-10-1,9,scientific reasoning,6,Result Summarization and Interpretation
+da-10-1,10,source reliability,0,Source Reliability
+da-10-3,1,data handling,16,Correct Identification of Inputs
+da-10-3,2,method selection,23,Label Construction per Dataset
+da-10-3,3,data handling,17,Proper Handling of Missing Scores and Validity Checks
+da-10-3,4,statistical rigor,29,ROC-AUC Computation Correctness
+da-10-3,5,data handling,15,MLO versus Control Comparison and Conclusion
+da-10-3,6,source reliability,0,Source Reliability
+da-11-1,1,data handling,12,Data Loading and Quality Control
+da-11-1,2,method selection,13,"Normalization, Dimensionality Reduction, and Clustering"
+da-11-1,3,method selection,15,Marker Gene Selection and Expression Scoring
+da-11-1,4,data handling,15,Cell Type Identification and Annotation
+da-11-1,5,statistical rigor,25,Ligand-Receptor Interaction Analysis
+da-11-1,6,statistical rigor,15,Pathway-Level Analysis and Ranking
+da-11-1,7,biological interpretation,5,Biological Interpretation and Constraint Adherence
+da-11-1,8,source reliability,0,Source Reliability
+da-12-2,1,data handling,20,Correct Gene List Extraction
+da-12-2,2,data handling,20,ORA Implementation with Correct Gene Sets
+da-12-2,3,statistical rigor,15,Multiple Testing Correction and Significance Threshold
+da-12-2,4,data handling,25,G2M Checkpoint Quantitative Results
+da-12-2,5,statistical rigor,10,Global ORA Summary and Top Pathways
+da-12-2,6,method selection,10,Clarity and Reproducibility
+da-12-2,7,source reliability,0,Source Reliability
+da-12-4,1,method selection,19,Matched-Cohort Construction
+da-12-4,2,scientific reasoning,19,Univariate Cox PH per Microbiome Feature
+da-12-4,3,statistical rigor,19,Poor-Prognosis Filtering Rule (HR > 1 AND p < 0.05)
+da-12-4,4,data handling,27,Kocuria-Specific Determination
+da-12-4,5,scientific reasoning,16,Reporting Completeness
+da-12-4,6,source reliability,0,Source Reliability
+da-13-1,1,method selection,20,Data Handling and Preprocessing
+da-13-1,2,statistical rigor,35,Statistical Testing and Multiple Testing Correction
+da-13-1,3,statistical rigor,18,Identification of Significant Proteins with Direction of Change
+da-13-1,4,data handling,10,Comparison Between Regimens for Unique and Shared Proteins
+da-13-1,5,biological interpretation,17,Biological Interpretation of Results
+da-13-1,6,source reliability,0,Source Reliability
+da-13-3,1,statistical rigor,15,Data Parsing and Preparation
+da-13-3,2,statistical rigor,15,Significance Filtering by Adjusted P-Value
+da-13-3,3,statistical rigor,25,Ranking of Associations by Effect Size
+da-13-3,4,biological interpretation,27,Biological Interpretation of Associations and Protein Functions
+da-13-3,5,data handling,18,Contextualization Within Study Framework
+da-13-3,6,source reliability,0,Source Reliability
+da-13-5,1,data handling,20,Data Handling and GAHT Protein Selection
+da-13-5,2,data handling,20,Identification of Top 100 Sex-Associated Proteins
+da-13-5,3,statistical rigor,20,Overlap Calculation and Hypergeometric Enrichment Testing
+da-13-5,4,data handling,20,Directional Concordance Analysis
+da-13-5,5,biological interpretation,20,Biological Interpretation and Cross-Cohort Context
+da-13-5,6,source reliability,0,Source Reliability
+da-13-6,1,data handling,20,Data Preparation and Filtering
+da-13-6,2,data handling,20,Protein Matching and Direction Determination
+da-13-6,3,statistical rigor,20,Direction Concordance Quantification
+da-13-6,4,data handling,20,Identification and Characterization of Notable Exceptions
+da-13-6,5,biological interpretation,20,Biological Interpretation and Contextualization
+da-13-6,6,source reliability,0,Source Reliability
+da-14-1,1,data handling,15,Data Loading and Integrity Verification
+da-14-1,2,statistical rigor,20,Correlation Methodology and Computation
+da-14-1,3,statistical rigor,20,Hierarchical Clustering Implementation
+da-14-1,4,data handling,20,Identification and Description of Score Groupings
+da-14-1,5,biological interpretation,15,Biological Interpretation and Restraint
+da-14-1,6,scientific reasoning,10,Acknowledgment of Limitations and Scope
+da-14-1,7,source reliability,0,Source Reliability
+da-14-3,1,data handling,11,Analysis Goal and Cohort Context
+da-14-3,2,data handling,16,Data Loading and Integrity Checks
+da-14-3,3,method selection,27,Subgroup Definitions and z-Score Threshold Logic
+da-14-3,4,statistical rigor,23,Quantification and Exact Proportion Reporting
+da-14-3,5,scientific reasoning,23,Interpretation and Stated Assumptions
+da-14-3,6,source reliability,0,Source Reliability
+da-14-8,1,data handling,10,Analysis Goal and Gene-Set Context
+da-14-8,2,method selection,20,Gene Set Definition and Extraction
+da-14-8,3,statistical rigor,20,Pairwise Correlation Computation
+da-14-8,4,statistical rigor,15,Summary Statistics of Module Coherence
+da-14-8,5,data handling,15,Identification of Low-Coherence Genes
+da-14-8,6,biological interpretation,20,Interpretation and Limitations
+da-14-8,7,source reliability,0,Source Reliability
+da-15-1,1,statistical rigor,20,Statistical Model Specification
+da-15-1,2,data handling,20,Covariate Adjustment and Confounder Control
+da-15-1,3,statistical rigor,25,"Normalization, Variance Modeling, and Testing"
+da-15-1,4,statistical rigor,15,Significance Thresholding and DEG Quantification
+da-15-1,5,scientific reasoning,20,Effect-Size Prioritization and Top Gene Interpretation
+da-15-1,6,source reliability,0,Source Reliability
+da-15-2,1,data handling,15,Correct Understanding of Question and ALS-Only Subsetting
+da-15-2,2,method selection,20,"Processing for WGCNA (Normalization, Batch Effects, QC)"
+da-15-2,3,method selection,33,WGCNA Network Construction and Module Detection
+da-15-2,4,statistical rigor,22,Cell-Type Marker Enrichment Testing (Astrocyte/Microglia/Oligo/Neuron)
+da-15-2,5,statistical rigor,10,Required Reporting of Module Sizes and Cell-Type Associations
+da-15-2,6,source reliability,0,Source Reliability
+da-15-7,1,data handling,15,"Data Loading, Cohort Selection, and Study Design"
+da-15-7,2,statistical rigor,20,"Gene Filtering, Normalization, and Statistical Model Specification"
+da-15-7,3,statistical rigor,25,Transcriptome-wide Association Testing and Multiple Testing Correction
+da-15-7,4,statistical rigor,20,Results Reporting and Gene Ranking
+da-15-7,5,biological interpretation,20,Biological Validation and Interpretation of CHIT1
+da-15-7,6,source reliability,0,Source Reliability
+da-15-8,1,data handling,15,Data Loading and Proteomics Data Extraction
+da-15-8,2,statistical rigor,20,Proteomics Filtering and Directional Concordance
+da-15-8,3,statistical rigor,25,Three-Way Integration and Concordance Filtering
+da-15-8,4,statistical rigor,20,Quantitative Ranking by Combined Effect Size
+da-15-8,5,data handling,20,Biomarker Assessment and Clinical Interpretation
+da-15-8,6,source reliability,0,Source Reliability
+da-16-1,1,data handling,14,"Data Loading, Metadata Parsing, and Cohort Filtering"
+da-16-1,2,method selection,11,Gene Expression Normalization and Low-Expression Filtering
+da-16-1,3,method selection,16,Unsupervised Clustering Method and Parameter Reporting
+da-16-1,4,data handling,11,Cluster Characterization (Sizes and Feature Distributions)
+da-16-1,5,statistical rigor,14,Statistical Testing of Cluster vs Clinical Feature
+da-16-1,6,data handling,11,Direct Answer to the Stratification Question
+da-16-1,7,biological interpretation,16,Clinical-Trial Enrichment Interpretation
+da-16-1,8,scientific reasoning,7,Limitations Stated
+da-16-1,9,source reliability,0,Source Reliability
+da-17-1,1,data handling,18,Data Loading and Exploration
+da-17-1,2,data handling,15,Per-Donor Percentage Calculation
+da-17-1,3,statistical rigor,12,Low-Count Filtering
+da-17-1,4,statistical rigor,20,Statistical Analysis
+da-17-1,5,data handling,20,Correct Identification of Results
+da-17-1,6,biological interpretation,15,Scientific Accuracy and Interpretation
+da-17-1,7,source reliability,0,Source Reliability
+da-17-3,1,data handling,18,Data Preparation and Pseudobulk Aggregation
+da-17-3,2,statistical rigor,17,Statistical Analysis Method
+da-17-3,3,statistical rigor,20,Differential Expression Results
+da-17-3,4,method selection,15,ISG Gene Set Definition
+da-17-3,5,statistical rigor,15,ISG Enrichment Testing
+da-17-3,6,biological interpretation,15,Scientific Accuracy and Biological Interpretation
+da-17-3,7,source reliability,0,Source Reliability
+da-17-5,1,data handling,17,Data Loading and Ancestry Identification
+da-17-5,2,data handling,15,Per-Donor Cell Type Calculation
+da-17-5,3,statistical rigor,20,Statistical Comparison Method
+da-17-5,4,scientific reasoning,20,Ancestry-Specific Results
+da-17-5,5,statistical rigor,13,Between-Ancestry Statistical Comparison and Interpretation
+da-17-5,6,data handling,15,Scientific Accuracy and Population-Specific Implications
+da-17-5,7,source reliability,0,Source Reliability
+da-18-1,1,data handling,15,Data Loading and Preparation
+da-18-1,2,data handling,10,Subtype Classification
+da-18-1,3,statistical rigor,15,Tumour Mutational Burden Analysis
+da-18-1,4,data handling,20,Driver Gene Analysis
+da-18-1,5,statistical rigor,20,ERBB2 Alteration Analysis
+da-18-1,6,biological interpretation,20,Interpretation and Biological Context
+da-18-1,7,source reliability,0,Source Reliability
+da-18-5,1,method selection,5,Sample Selection and Therapy Classification
+da-18-5,2,method selection,15,Definition of MAPK Gene Set
+da-18-5,3,method selection,15,Alteration Identification and Union
+da-18-5,4,statistical rigor,15,Frequency Calculation and Group Comparison
+da-18-5,5,statistical rigor,15,Mutual Exclusivity Analysis
+da-18-5,6,statistical rigor,20,Results Reporting
+da-18-5,7,biological interpretation,15,Interpretation and Biological Context
+da-18-5,8,source reliability,0,Source Reliability
+da-18-7,1,data handling,15,Cohort Selection
+da-18-7,2,method selection,20,Definition of ESR1 Ligand-Binding Domain Mutations
+da-18-7,3,method selection,20,Definition of MAPK Pathway Alterations
+da-18-7,4,statistical rigor,20,Statistical Testing
+da-18-7,5,statistical rigor,15,Results Reporting
+da-18-7,6,scientific reasoning,10,Interpretation and Biological Context
+da-18-7,7,source reliability,0,Source Reliability
+da-19-1,1,method selection,10,Data Source and Provenance
+da-19-1,2,biological interpretation,10,Contrast Validation and Setup
+da-19-1,3,statistical rigor,18,Differential Expression Filtering
+da-19-1,4,scientific reasoning,16,Top Downregulated Gene Reporting
+da-19-1,5,statistical rigor,14,MYC Repression Assessment
+da-19-1,6,biological interpretation,14,Domain Reasoning and Interpretation
+da-19-1,7,scientific reasoning,10,Assumptions and Uncertainty Handling
+da-19-1,8,scientific reasoning,8,Limitations and Actionable Next Steps
+da-19-1,9,source reliability,0,Source Reliability
+da-19-3,1,data handling,15,RUNX1 Data Selection and Conditioning
+da-19-3,2,statistical rigor,30,Differential Peak Occupancy Computation
+da-19-3,3,statistical rigor,25,Quantitative Reporting Accuracy
+da-19-3,4,data handling,20,Genomic Feature Enrichment of Gained Peaks
+da-19-3,5,biological interpretation,10,Mechanistic Interpretation
+da-19-3,6,source reliability,0,Source Reliability
+da-19-4,1,data handling,10,Correct Inputs and Condition Mapping
+da-19-4,2,statistical rigor,20,Region-Level Differential H3K27ac Quantification
+da-19-4,3,statistical rigor,20,Statistical Significance Framework
+da-19-4,4,scientific reasoning,10,Reduced Region Output Quality
+da-19-4,5,method selection,15,MYC Enhancer Anchor Definition Using RUNX1 Data
+da-19-4,6,data handling,15,ME1/ME2/BDME Decrease Calls
+da-19-4,7,biological interpretation,10,Biological Interpretation and Limits
+da-19-4,8,source reliability,0,Source Reliability
+da-19-6,1,method selection,15,ATAC Cohort Definition and Input Integrity
+da-19-6,2,statistical rigor,25,Region-Level Accessibility Quantification Workflow
+da-19-6,3,statistical rigor,25,Increased vs Decreased Accessibility Region Counts
+da-19-6,4,data handling,15,Global Chromatin Openness Conclusion
+da-19-6,5,biological interpretation,10,Biological Reasoning and Mechanistic Relevance
+da-19-6,6,scientific reasoning,10,"Assumptions, Uncertainty, and Limitations"
+da-19-6,7,source reliability,0,Source Reliability
+da-20-1,1,data handling,20,Data Selection and Precision Filtering (20 points)
+da-20-1,2,method selection,25,Normalization and Feature Selection (25 points)
+da-20-1,3,data handling,15,Dimensionality Reduction (15 points)
+da-20-1,4,data handling,20,Cluster Validation and Cell-Line Concordance (20 points)
+da-20-1,5,biological interpretation,10,Biological Interpretation of Lineage Similarity (10 points)
+da-20-1,6,scientific reasoning,10,Assumptions and Limitations (10 points)
+da-20-1,7,source reliability,0,Source Reliability
+da-20-3,1,data handling,10,Goal and Correct Scope (10 points)
+da-20-3,2,statistical rigor,15,Data Ingestion and Preprocessing (15 points)
+da-20-3,3,statistical rigor,20,GSEA Implementation (20 points)
+da-20-3,4,data handling,15,Results Integration Across Conditions (15 points)
+da-20-3,5,statistical rigor,25,Quantitative Pathway Validation (25 points)
+da-20-3,6,scientific reasoning,15,Assumptions and Limitations (15 points)
+da-20-3,7,source reliability,0,Source Reliability
+da-20-4,1,data handling,10,Scope and Framing
+da-20-4,2,statistical rigor,25,Differential Expression Pipeline
+da-20-4,3,statistical rigor,15,GSEA Implementation
+da-20-4,4,biological interpretation,20,KRAS Signalling Interpretation (Cell-Type Specific)
+da-20-4,5,biological interpretation,20,EMT Pathway Interpretation (Dose-Dependent)
+da-20-4,6,data handling,10,Melanocyte BRAF-Inhibition Signature
+da-20-4,7,source reliability,0,Source Reliability
+da-24-3,1,data handling,10,Inverse-Variance Weights and Standard Error
+da-24-3,2,statistical rigor,10,Meta P-value via Z-test
+da-24-3,3,statistical rigor,10,"Allele Frequency, MAF, and Locus Definition"
+da-24-3,4,statistical rigor,10,P-value Thresholds and Direction Consistency
+da-24-3,5,data handling,10,Multi-Phenotype Locus Identification
+da-24-3,6,data handling,10,Metabolite Data Loading and SD Calculation
+da-24-3,7,data handling,20,Coloc.abf Pairwise Execution
+da-24-3,8,data handling,20,Top Hypothesis Extraction and Conclusion
+da-24-3,9,source reliability,0,Source Reliability
+da-25-1,1,scientific reasoning,9,Dataset Structure and Annotation Limits
+da-25-1,2,method selection,16,Pathogenic Mutation Filter Methodology
+da-25-1,3,statistical rigor,16,Mutation Frequency Ranking
+da-25-1,4,statistical rigor,16,T Stage Extraction and Grouping
+da-25-1,5,statistical rigor,16,Mutation–T Stage Statistical Testing
+da-25-1,6,statistical rigor,16,Mutation–T Stage Association Results
+da-25-1,7,biological interpretation,11,Biological Insight Quality
+da-25-1,8,source reliability,0,Source Reliability
+da-26-2,1,statistical rigor,15,Normality Likelihood Ratio Test Implementation
+da-26-2,2,data handling,5,DepMap Score Loading
+da-26-2,3,statistical rigor,13,Distribution Classification (Normal vs. T-Skewed)
+da-26-2,4,data handling,16,Sum of Squared Deviations Calculation
+da-26-2,5,statistical rigor,8,Druggable Gene List Integration
+da-26-2,6,statistical rigor,11,Patient vs. Cell Line Significance Comparison
+da-26-2,7,data handling,21,PTPN11 Biomarker Identification
+da-26-2,8,statistical rigor,11,BRCA-Specific Data Filtering
+da-26-2,9,source reliability,0,Source Reliability
+da-26-4,1,data handling,20,Lasso Regression with Cross-Validated Lambda
+da-26-4,2,statistical rigor,13,Dual-Threshold Refinement (Effect Size + FDR)
+da-26-4,3,scientific reasoning,12,Iterative Mutual-Exclusivity Prioritization
+da-26-4,4,statistical rigor,12,Permutation-Based Significance Testing
+da-26-4,5,data handling,12,Paralog Identification with Similarity Filter
+da-26-4,6,scientific reasoning,14,"PPI, Prevalence, and Literature Integration"
+da-26-4,7,scientific reasoning,12,Canonical BRCA Paralog Pair Reporting
+da-26-4,8,statistical rigor,5,Observed-vs-Expected Co-occurrence Reporting
+da-26-4,9,source reliability,0,Source Reliability
+da-3-4,1,data handling,15,Data Identification and Loading
+da-3-4,2,statistical rigor,21,Statistical Test Selection and Justification
+da-3-4,3,statistical rigor,24,Test Implementation and Reported Result
+da-3-4,4,statistical rigor,17,Descriptive Statistics per Response Group
+da-3-4,5,scientific reasoning,23,Interpretation in Context
+da-3-4,6,source reliability,0,Source Reliability
+da-3-5,1,data handling,15,Data Identification and Cohort Loading
+da-3-5,2,data handling,25,Response Classification and Per-Gene Aggregation
+da-3-5,3,statistical rigor,20,Statistical Test and Multiple-Testing Correction
+da-3-5,4,scientific reasoning,25,Key Finding (BRCA2 Responder-Enrichment) and Results Reporting
+da-3-5,5,scientific reasoning,15,"Interpretation, Limitations, and Methodological Caveats"
+da-3-5,6,source reliability,0,Source Reliability
+da-4-1,1,method selection,16,Composition Matrix Construction and Normalization
+da-4-1,2,statistical rigor,27,NMF Rank Sweep with Stability Assessment
+da-4-1,3,statistical rigor,16,Optimal Rank Selection with Dual Justification
+da-4-1,4,data handling,21,"Final NMF Fit, Module Extraction, and Patient Assignment"
+da-4-1,5,biological interpretation,20,Biological Interpretation and Clinical Relevance
+da-4-1,6,source reliability,0,Source Reliability
+da-4-6,1,method selection,16,"Data Loading, Cohort Definition, and Endpoint Handling"
+da-4-6,2,method selection,16,Texp Metric Processing and Within-Non-MPR Median Stratification
+da-4-6,3,statistical rigor,21,Kaplan-Meier Estimation and Log-Rank Testing
+da-4-6,4,source reliability,21,Cox Model and Hazard Ratios with 95 % CI
+da-4-6,5,scientific reasoning,26,"Quantification of MPR-like Non-MPR Proportion + Interpretation, Assumptions, Limitations"
+da-4-6,6,source reliability,0,Source Reliability
+da-4-7,1,data handling,19,Data Loading and Expanded Terminal-Tex Identification
+da-4-7,2,method selection,14,Clonotype Definition Using Paired TRA + TRB Chains
+da-4-7,3,statistical rigor,17,Per-Patient Expansion Quantification with >=10-Cell Filter
+da-4-7,4,statistical rigor,17,Public TCR Search Across >=2 Patients
+da-4-7,5,scientific reasoning,18,Complete TCR-Candidate Reporting
+da-4-7,6,biological interpretation,15,MPR / pCR Prioritisation and Biological Rationale
+da-4-7,7,source reliability,0,"Assumptions, Limitations, Preclinical-Validation Criteria, and Source Reliability"
+da-5-1,1,data handling,19,"Data Loading, PDAC Filtering, and Tier Merge"
+da-5-1,2,scientific reasoning,15,Druggability Tier Stratification and Interpretation
+da-5-1,3,scientific reasoning,13,Cancer-Selective Dependency (Pan-Essential Filter)
+da-5-1,4,statistical rigor,23,Top-Target Identification and Multi-Cancer Validation Ranking
+da-5-1,5,biological interpretation,19,Biological Rationale per Top Target
+da-5-1,6,scientific reasoning,11,Limitations and Next Steps
+da-5-1,7,source reliability,0,Source Reliability
+da-5-3,1,data handling,15,"Data Loading, Validation, and Filtering Setup"
+da-5-3,2,scientific reasoning,30,Cancer-Type Flag Interpretation and Pair Generation
+da-5-3,3,scientific reasoning,20,Tier-Stratified Reporting and Cancer Distribution
+da-5-3,4,data handling,25,Drug Annotation and Multi-Cancer-Breadth Highlights
+da-5-3,5,scientific reasoning,10,"Translational Interpretation, Limitations, and Next Steps"
+da-5-3,6,source reliability,0,Source Reliability
+da-6-2,1,statistical rigor,15,Restrict to TRNSCRPT × SKM-VL
+da-6-2,2,statistical rigor,20,Require Significance at All Four Timepoints per Sex
+da-6-2,3,data handling,20,Directional 4-State Encoding per Sex
+da-6-2,4,data handling,20,Shared vs Sex-Specific Categorisation (Mutually Exclusive)
+da-6-2,5,statistical rigor,15,Pattern Ranking and Frequency Analysis
+da-6-2,6,biological interpretation,10,Biological Interpretation of Temporal and Sex Patterns
+da-6-2,7,source reliability,0,Source Reliability
+da-6-5,1,data handling,15,Identify Assay and Tissue Coverage
+da-6-5,2,statistical rigor,20,Training-Regulated Feature Definition at 5 % FDR
+da-6-5,3,data handling,15,"Per-(Tissue, Assay) De-duplication"
+da-6-5,4,statistical rigor,20,Per-Assay Tissue × Tissue Similarity Computation
+da-6-5,5,data handling,15,Tissue × Assay Coverage Gap Handling
+da-6-5,6,data handling,15,Cross-Assay Aggregation
+da-6-5,7,source reliability,0,Interpretation of Coordinated Tissue Pairs and Source Reliability
+da-8-1,1,data handling,12,Baseline and Peak Glucose Calculation
+da-8-1,2,statistical rigor,9,Excluding Mitigators and Replicate Averaging
+da-8-1,3,data handling,6,Median Threshold Classification
+da-8-1,4,data handling,11,Metabolite Data Preparation
+da-8-1,5,data handling,20,Regression Model Specification
+da-8-1,6,data handling,5,Missing Data Handling
+da-8-1,7,statistical rigor,22,Statistical Filtering Criteria
+da-8-1,8,scientific reasoning,15,Results Interpretation and Limitations
+da-8-1,9,source reliability,0,Source Reliability
+da-8-2,1,method selection,20,Baseline Insulin-Resistance Classification
+da-8-2,2,statistical rigor,25,Per-Condition Peak Glucose Calculation
+da-8-2,3,scientific reasoning,20,Peak Glucose Reduction (Fiber - Protein)
+da-8-2,4,statistical rigor,25,Two-Way ANOVA with Interaction Term
+da-8-2,5,scientific reasoning,10,Interaction Effect Size and Clinical Interpretation
+da-8-2,6,source reliability,0,Source Reliability
+da-8-3,1,method selection,8,Spiker Group Identification (Potato vs Grape)
+da-8-3,2,statistical rigor,17,Metabolomics Data Processing and Differential Abundance Analysis
+da-8-3,3,statistical rigor,23,"Top-10 Selection, Lipid Identification, and Directionality"
+da-8-3,4,statistical rigor,11,Phenotype Correlation Analysis
+da-8-3,5,statistical rigor,16,Mediating Lipid Identification
+da-8-3,6,statistical rigor,11,Statistical Methodology and Multiple-Testing Correction
+da-8-3,7,biological interpretation,14,Biological Interpretation and Results Presentation
+da-8-3,8,source reliability,0,Source Reliability
+da-9-1,1,data handling,15,Data Loading and Reshaping
+da-9-1,2,statistical rigor,10,Cohort Filtering and Preparation
+da-9-1,3,data handling,15,T-Cell Feature Selection
+da-9-1,4,statistical rigor,20,Median-Split Survival Analysis Methodology
+da-9-1,5,statistical rigor,25,Results Accuracy and Reporting
+da-9-1,6,biological interpretation,15,Biological Interpretation and Limitations
+da-9-1,7,source reliability,0,Source Reliability
+da-9-7,1,data handling,12,Data Loading and Validation
+da-9-7,2,data handling,20,"C2D1 Harmonisation, Patient Matching, and Arm Integration"
+da-9-7,3,statistical rigor,23,Spearman Correlation with Preprocessing and Stratified Computation
+da-9-7,4,statistical rigor,15,Multiple-Testing Correction Scoping
+da-9-7,5,scientific reasoning,15,Results Accuracy and Null-Findings Reporting
+da-9-7,6,scientific reasoning,15,"Interpretation, Limitations, and Compartment Caveats"
+da-9-7,7,source reliability,0,Source Reliability

@@ -1,0 +1,69 @@
+{
+  "run_id": "ds4-pro",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-10-1",
+  "paper": "10",
+  "correct": true,
+  "score": 0.94,
+  "grade_mode": "deepseek",
+  "final_answer": "============================================================\nPhase Separation Analysis: Amino Acid Composition & Predictor Benchmarking\n============================================================\n\nQUESTION:\nCompare amino-acid composition differences between PS-Self (SaPS) and\nPS-Part (PdPS) proteins, and evaluate the performance of four\nphase-separation predictors (PScore, PLAAC, catGRANULE, FuzDrop) in\ndistinguishing each PS type from non-PS proteins.\n\n============================================================\n1. AMINO ACID COMPOSITION: SaPS vs PdPS\n============================================================\n\nAnalysis performed on both proteome-wide (128 SaPS, 214 PdPS, 48,158\nNoPS) and human-only (59 hSaPS, 96 hPdPS, 8,801 hNoPS) sets. Results\nare concordant between both.\n\nWHOLE-SEQUENCE COMPOSITION (proteome-wide, ordered by disorder propensity):\n\nSaPS-enriched residues (SaPS/PdPS ratio > 1.05, vs NoPS baseline):\n  G (Gly)  1.39x  - classic disorder-promoting; flexible spacer\n  T (Thr)  1.21x  - polar, disorder-promoting\n  P (Pro)  1.18x  - helix-breaker; strong disorder promoter\n  F (Phe)  1.13x  - aromatic pi-pi sticker\n  S (Ser)  1.13x  - polar; phosphorylation site for regulation\n  Q (Gln)  1.09x  - polar spacer\n  N (Asn)  1.07x  - polar spacer\n\nPdPS-enriched residues (SaPS/PdPS ratio < 0.95):\n  C, I, L, E, K, R, H, D, V, Y\n  Charged residues (R, K, E, D) are the key PdPS signature.\n\nIDR-RESTRICTED COMPOSITION (the strongest signal):\n  SaPS IDRs show massive enrichment of aromatic stickers:\n    Y (Tyr): 1.81x vs NoPS IDR (strongest single signal)\n    F (Phe): 1.78x vs NoPS IDR\n  PdPS IDRs show NO F enrichment (1.01x) and weaker Y (1.42x).\n  PdPS IDRs enriched in R (1.18x) -- cationic sticker for partner binding.\n\nINTERPRETATION:\nSaPS uses aromatic pi-pi contacts (Y/F stickers concentrated in IDRs)\nfor self-assembling LLPS, consistent with the sticker-spacer model.\nPdPS uses charged-residue interactions (R/K/E/D) for partner-dependent\ncondensation, with a composition profile closer to structured proteins.\n\nSEQUENCE PATTERNING (localCIDER on IDRs, Mann-Whitney U):\n  SaPS IDRs have significantly lower FCR (0.223 vs 0.274, p=3.4e-12)\n    -- fewer charged residues in disordered regions.\n  SaPS IDRs have less negative NCPR (+0.0002 vs -0.021, p=2.8e-4).\n  Charge segregation (kappa) is not significantly different (p=0.23)\n    -- patterning signal is in aromatic placement, not charge blockiness.\n\n============================================================\n2. PREDICTOR PERFORMANCE (ROC-AUC)\n============================================================\n\nPROTEOME-WIDE:\n                 SaPS vs NoPS    PdPS vs NoPS    Delta AUC\n  PScore         0.831           0.662           +0.169\n  PLAAC          0.834 (best)    0.644           +0.190\n  catGRANULE     0.817           0.706 (best)    +0.111\n\nHUMAN-ONLY:\n                 hSaPS vs hNoPS  hPdPS vs hNoPS  Delta AUC\n  PScore         0.813           0.689           +0.124\n  PLAAC          0.831 (best)    0.640           +0.191\n  catGRANULE     0.814           0.726 (best)    +0.088\n\nFuzDrop: NOT EVALUATED. FuzDrop scores are absent from the provided\ndataset, the FuzDrop web server does not expose a programmatic API,\nand the GitHub repository is not publicly accessible. The benchmark\ncovers three of the four requested predictors.\n\nSUPPLEMENTARY -- PhaSePred mechanism-specific classifiers (state-of-art):\n  SaPS-8fea:   SaPS vs NoPS AUC = 0.982 (near-perfect)\n  PdPS-8fea:   PdPS vs NoPS AUC = 0.973 (near-perfect)\n\nKEY FINDING:\nAll three single-feature predictors discriminate SaPS substantially\nbetter than PdPS (gap 0.09-0.19 AUC units). Even the best PdPS\npredictor (catGRANULE, AUC=0.706-0.726) is modest, confirming that\npartner-dependent phase separation has a weaker intrinsic sequence\nsignature and cannot be reliably predicted from sequence alone.\nMechanism-specific meta-predictors (PhaSePred) close this gap by\nincorporating partner-interaction features.\n\n============================================================\nLIMITATIONS\n============================================================\n- FuzDrop not evaluated (data unavailable, no API access).\n- Small positive sets (59-214 proteins) limit statistical power.\n- All predictions are propensities -- experimental validation\n  (droplet assay, turbidity, condensate imaging) is required.\n- PdPS prediction remains fundamentally limited by the fact that\n  the partner (not the query sequence) often supplies the\n  multivalency needed for phase separation.",
+  "final_text": "Both output files are confirmed present:\n\n- `trace.md` — 22,303 bytes, full structured analytical trace\n- `answer.txt` — 4,522 bytes, final answer\n\n**Routing:** Delegated to `phase_separation_analyst` — its `When to use` line literally matches this task (\"给定 SaPS / PdPS / NoPS 蛋白集,比较氨基酸组成差异并 benchmark 四个 PS 预测器\").\n\n**What was produced:**\n\n1. **Amino-acid composition comparison (SaPS vs PdPS):** The analysis compared full-length and IDR-restricted amino acid frequencies, finding SaPS enrichment in disorder-promoting residues (Gly, Thr, Pro, Ser, Gln) and aromatic stickers (Phe, Tyr), while PdPS proteins are enriched in charged residues. In IDRs specifically, Tyrosine showed 1.81× enrichment and Phenylalanine 1.78× enrichment in SaPS vs NoPS — the strongest signals — consistent with the sticker-spacer model of self-assembling LLPS.\n\n2. **Predictor benchmarking (PScore, PLAAC, catGRANULE):** ROC-AUC evaluation for SaPS vs NoPS and PdPS vs NoPS discrimination, plus statistical comparison of the two tasks per predictor. FuzDrop was not evaluable (scores absent from the dataset and no programmatic API available).\n\n**Key numeric results:** PLAAC achieved the best AUC for SaPS vs NoPS (0.834); catGRANULE for PdPS vs NoPS (0.706). All three predictors discriminated SaPS substantially better than PdPS (gap 0.09–0.19 AUC).",
+  "grader_notes": "The agent performed a thorough analysis with only minor omission: it did not derive and apply an IDR-based amino-acid ordering despite having IDR data, instead relying on a literature disorder scale. All other criteria are fully satisfied.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 8,
+      "reason": "Data loaded correctly, schema verified including UniProt IDs and required columns, dimensions reported, NaN handling documented."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 12,
+      "reason": "Correctly defined SaPS vs NoPS and PdPS vs NoPS sets for both curated and human, documented sizes, verified mutual exclusivity."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 12,
+      "reason": "Amino-acid composition computed by pooling all residues per set, normalized as fraction of total, handling only 20 standard amino acids."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 10,
+      "reason": "Fold-change computed as ratio with 1e-9 stabilizer, consistent ordering, enriched/depleted identified, human replication done."
+    },
+    "criterion_5": {
+      "level": "A",
+      "score": 12,
+      "reason": "Used Uversky disorder propensity scale to order amino acids, rationale clearly linked to phase separation biology, applied consistently."
+    },
+    "criterion_6": {
+      "level": "B",
+      "score": 6,
+      "reason": "Correctly extracted IDR segments and computed IDR frequencies, but did not derive and use an IDR-based amino-acid ordering in downstream analyses."
+    },
+    "criterion_7": {
+      "level": "A",
+      "score": 12,
+      "reason": "Full replication on human proteome with same methodology, patterns compared and reported as concordant."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 16,
+      "reason": "ROC-AUC computed separately for each predictor on both tasks, NaN handled by exclusion, human sets evaluated, random baseline implied."
+    },
+    "criterion_9": {
+      "level": "A",
+      "score": 6,
+      "reason": "Summary names key enriched amino acids, interprets aromatic sticker signature, explains predictor performance gap with data-grounded reasoning."
+    },
+    "criterion_10": {
+      "level": "A",
+      "score": 0,
+      "reason": "All numbers traceable to provided files, identifiers from UniProt, biological interpretations backed by real references with DOIs."
+    }
+  },
+  "error": null,
+  "elapsed_s": 4021.264887670055,
+  "tool_calls": 46,
+  "input_tokens": 2133620,
+  "output_tokens": 33114
+}

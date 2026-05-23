@@ -1,0 +1,190 @@
+<p align="center">
+  <img alt="Tasks"     src="https://img.shields.io/badge/tasks-50-green.svg">
+  <img alt="Models"    src="https://img.shields.io/badge/models-7-green.svg">
+  <img alt="Python"    src="https://img.shields.io/badge/python-3.11%2B-blue.svg">
+  <img alt="License"   src="https://img.shields.io/badge/license-PolyForm--NC--1.0.0-lightgrey.svg">
+  <img alt="Version"   src="https://img.shields.io/badge/version-v1.0-blue.svg">
+</p>
+
+# OmicOS-BiomniBench — agent harness & results
+
+This is the **benchmarking harness for the
+[omicos](https://github.com/omicverse/omicos) agent on the
+[BiomniBench-DA](https://huggingface.co/datasets/phylobio/BiomniBench-DA)
+dataset** (50 process-level biomedical data-analysis tasks derived from
+published research papers, graded against expert-authored rubrics).
+
+> **Task spec, fixtures, and rubrics live on HF**:
+> [`phylobio/BiomniBench-DA`](https://huggingface.co/datasets/phylobio/BiomniBench-DA).
+> This repository hosts only the **harness, sweep configs, per-model
+> results, and capability analysis** — it does not duplicate the dataset.
+
+> **`omicos` agent source code**: hosted separately at
+> [github.com/omicverse/omicos](https://github.com/omicverse/omicos)
+> *(coming soon — public release pending)*. This harness talks to
+> `omicos serve` over its public HTTP API; once the omicos repo is up,
+> `pip install omicos` (or the local build instructions there) will be
+> enough to reproduce.
+
+## What this measures
+
+For each `(agent_id, task)` cell the harness:
+
+1. Copies the BiomniBench-DA task's `environment/` into a per-cell workspace under `runs/<run_id>/<agent_id>/<task_id>/workspace/` and drops `instruction.md` alongside it.
+2. Launches `omicos serve` against that workspace with a unique port and the selected agent's `.md` overlaid from the omicos admin catalog.
+3. Sends the instruction via `POST /api/agent/chat/stream` with `config.agent = <id>` and streams the SSE response.
+4. Persists the **full trajectory** (tool calls + assistant turns) to `trajectory.jsonl`.
+5. Grades by reading `<workspace>/trace.md` + `<workspace>/answer.txt` and applying the task's `tests/rubric.txt` — parse per-criterion `Levels: A=X B=Y C=0`, ask the judge LLM to pick A/B/C for each, sum to a 0–100 score, divide by 100.
+
+A cell counts as **passed** when `score >= 0.7`.
+
+## Headline results
+
+**7 models · 50 tasks · capability mean** (excludes 6 documented benchmark-defect tasks and infra-failure cells; see `docs/failure-cases/`):
+
+| Model            | Capability mean | All-50 mean |
+|------------------|----------------:|------------:|
+| **gpt-5.5**      | **81.2%**       | 78.8%       |
+| ds4-pro          | 74.3%           | 73.0%       |
+| gpt-5.4          | 68.8%           | 67.7%       |
+| ds4-flash        | 67.7%           | 66.0%       |
+| mimo-v2.5-pro    | 67.3%           | 64.5%       |
+| mimo-v2.5        | 63.7%           | 62.7%       |
+| gpt-5.4-mini     | 44.2%           | 44.2%       |
+
+Two of the cheapest models (ds4-flash, mimo-v2.5) are within 6 pp of gpt-5.4 at a fraction of the API cost — see `analysis/omicos_cost_vs_score.png`.
+
+### 6-dimension capability profile
+
+`analysis/omicos_radar.png` partitions each task's rubric criteria into the six BiomniBench-DA evaluation dimensions (data handling, method selection, statistical rigor, biological interpretation, scientific reasoning, source reliability) and reports per-dimension percent-of-A-points earned.
+
+![BiomniBench-DA 6-dimension capability radar across 7 models](analysis/omicos_radar.png)
+
+*Non-trivial pattern: gpt-5.5 dominates most dimensions (100% source reliability, 88% method selection, 85% reasoning), but is the **weakest on biological_interpretation (60%)**, where ds4-flash (76%), mimo-v2.5-pro (73%), and mimo-v2.5 (68%) actually outperform it. gpt-5.4-mini lags on every axis (~40%) — its source_reliability of 26% reflects nearly absent citation discipline.*
+
+The full 355-criteria → 6-dimension mapping is audit-able in
+`analysis/omicos_dim_map.csv`; edit & re-run `scripts/bench_radar.py` to refine.
+
+## Quick start
+
+```bash
+# 0. Environment + secrets
+cp bench-env.template.sh bench-env.sh   # then $EDITOR; fill DEEPSEEK_API_KEY / HF_TOKEN etc.
+source bench-env.sh
+
+# 1. Install omicos  (https://github.com/omicverse/omicos — coming soon)
+# Once public:
+pip install omicos
+# Or local build per the omicos repo's instructions.
+
+# 2. Fetch the BiomniBench-DA dataset (gated on HF; accept terms first)
+uv run omicos-biomnibench fetch
+
+# 3. Run all 50 tasks under one model (provider, model-id, result label)
+bash scripts/bench_model.sh deepseek deepseek-v4-pro ds4-pro
+bash scripts/bench_model.sh codex    gpt-5.5         gpt-5.5
+
+# 4. Compare two or more finished runs
+python3 scripts/bench_compare.py gpt-5.5 ds4-pro ds4-flash
+
+# 5. (Optional) Cost analysis + 6-dim radar
+python3 scripts/bench_cost.py        gpt-5.5 ds4-pro ds4-flash
+python3 scripts/bench_cost_chart.py  gpt-5.5 ds4-pro ds4-flash
+python3 scripts/bench_radar.py
+```
+
+## Repo layout
+
+```
+OmicOS-BiomniBench/
+├── README.md                       this file
+├── LICENSE                         PolyForm Noncommercial 1.0.0
+├── pyproject.toml
+├── Makefile
+├── bench-env.template.sh           env template — fill in & source
+├── .gitignore
+│
+├── src/omicos_biomnibench/         harness Python package
+│   ├── cli.py                          fetch / smoke / run / regrade / report entry
+│   ├── runner.py                       spawn `omicos serve` per task, manage lifecycle
+│   ├── client.py                       SSE client, full-trajectory capture
+│   ├── grader.py                       rubric judge (DeepSeek v4-pro by default)
+│   ├── matrix.py                       agent × task orchestrator
+│   ├── dataset.py                      HF snapshot_download, per-task staging
+│   └── __init__.py
+│
+├── configs/
+│   ├── agents.yaml                     which omicos agents to evaluate
+│   └── models.yaml                     agent backend + judge backend config
+│
+├── scripts/
+│   ├── bench_model.sh                  run all 50 tasks under one model (namespaced run)
+│   ├── bench_compare.py                aggregate / compare runs; find + fix infra failures
+│   ├── bench_cost.py                   naive + cache-adjusted cost per task
+│   ├── bench_cost_chart.py             cost-vs-score scatter (omicos vs. other harnesses)
+│   └── bench_radar.py                  6-dim capability radar generator
+│
+├── results/                        per-model graded outputs (50 tasks × 7 models)
+│   ├── gpt-5.5/        vertical_agent_selector/da-*/grade.json
+│   ├── ds4-pro/        vertical_agent_selector/da-*/grade.json
+│   ├── ds4-flash/      vertical_agent_selector/da-*/grade.json
+│   ├── gpt-5.4/        vertical_agent_selector/da-*/grade.json
+│   ├── gpt-5.4-mini/   vertical_agent_selector/da-*/grade.json
+│   ├── mimo-v2.5/      vertical_agent_selector/da-*/grade.json
+│   └── mimo-v2.5-pro/  vertical_agent_selector/da-*/grade.json
+│
+├── analysis/                       capability profile + cost-vs-score chart
+│   ├── omicos_radar.png                7-model × 6-dim radar (headline figure)
+│   ├── omicos_dim_map.csv              criterion → dimension audit (355 rows)
+│   └── omicos_cost_vs_score.png        cost-adjusted comparison chart
+│
+└── docs/
+    ├── model-benchmarking.md           full sweep / compare / regrade workflow
+    ├── grading-deviations.md           judge-swap deviation log
+    └── failure-cases/                  per-task benchmark-defect case studies (6 docs)
+```
+
+## What's NOT in this repo
+
+| Artifact | Where |
+|---|---|
+| Task instructions, fixtures, rubric.txt, oracle/ | HF [`phylobio/BiomniBench-DA`](https://huggingface.co/datasets/phylobio/BiomniBench-DA) |
+| `omicos` agent runtime source code | [github.com/omicverse/omicos](https://github.com/omicverse/omicos) *(public release pending)* |
+| Trajectory JSONs (~5 GB across all runs) | Regenerate by re-running `scripts/bench_model.sh`. The judge is deterministic given a fixed trajectory, so re-grading reproduces `results/<run>/.../grade.json` row-for-row. If we later need to share traces for qualitative review, they may land at `omicverse/OmicOS-BiomniBench-trajectories` on HF. |
+
+## Methodology highlights
+
+- **Two-source rubric layout.** Each task has its own `tests/rubric.txt` shipped with the HF dataset. Criteria look like `Criterion 3: Title \n Description: ...\n Levels: A=18 B=8 C=0 \n [A]: ...`. The grader parses these, sends the agent's `trace.md` + `answer.txt` to the judge, and asks for an A/B/C per criterion.
+- **Judge default**: DeepSeek v4-pro (`OmicBench` uses the same). Fallback chain: `(configured → anthropic → gemini → deepseek)`. Swap with `OMICOS_BENCH_JUDGE_MODEL`.
+- **Failure cases.** Six tasks are documented as *benchmark defects* (rubric ↔ instruction mismatch, retracted source data, etc.) in `docs/failure-cases/`. The headline `Capability mean` excludes them; the `All-50 mean` includes them so the unfiltered score is still visible.
+- **Infra failures** (`no_output / error / serve_failed / judge_unavailable`) are excluded from both means and flagged separately by `scripts/bench_compare.py --infra <label>`.
+
+See `docs/model-benchmarking.md` for the full reproducibility recipe.
+
+## Citation
+
+```bibtex
+@misc{omicos-biomnibench-2026,
+  title  = {OmicOS-BiomniBench: evaluating an omics agent on BiomniBench-DA},
+  author = {OmicVerse contributors},
+  year   = {2026},
+  url    = {https://github.com/omicverse/OmicOS-BiomniBench}
+}
+```
+
+If you use this benchmark, please also cite the upstream BiomniBench paper (see the HF dataset card for the canonical citation).
+
+## License
+
+This repository is released under the
+[**PolyForm Noncommercial License 1.0.0**](https://polyformproject.org/licenses/noncommercial/1.0.0/).
+Academic research, personal study, and any other **noncommercial** use is
+freely permitted. Commercial use requires a separate license — contact
+the maintainers.
+
+The `omicos` agent runtime referenced here is hosted in a separate
+repository ([github.com/omicverse/omicos](https://github.com/omicverse/omicos)),
+under its own license.
+
+BiomniBench-DA task specs / rubrics / fixtures on HF are subject to
+their dataset card terms (see the HF page).

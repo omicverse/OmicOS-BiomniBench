@@ -1,0 +1,64 @@
+{
+  "run_id": "gpt-5.4",
+  "agent_id": "vertical_agent_selector",
+  "task_id": "da-26-2",
+  "paper": "26",
+  "correct": true,
+  "score": 0.84,
+  "grade_mode": "deepseek",
+  "final_answer": "In the BRCA subset, using a normal-vs-skew-normal likelihood-ratio test on dependency-score distributions with BH-FDR < 0.05 in both cohorts, I found 1357 significant selective dependencies in TCGA patient-level predicted DepMap scores and 232 in BRCA cell lines, with 1191 genes significant in patients but not in cell-line models.\n\nThe strongest patient-specific BRCA dependencies/biomarkers by patient-selectivity significance were SOX10 (LRT 519.223, FDR 1.23e-111), PDCL3 (466.870, 1.51e-100), SOX9 (424.623, 1.58e-91), UGCG (423.532, 2.04e-91), SRPK1 (416.235, 6.33e-90), ASCL1 (402.907, 4.20e-87), FOXA2 (374.537, 4.73e-81), CDK4 (315.268, 3.39e-68), MYOD1 (314.696, 4.07e-68), and ZFAND5 (304.184, 7.21e-66). These genes were significant in BRCA patients but not in BRCA cell lines under the same threshold.\n\nAmong patient-specific genes with especially strong average predicted dependency (more negative mean score), notable examples were EIF1AX (-1.712), PSMB5 (-1.656), THAP1 (-1.522), COPG1 (-1.492), CCND1 (-1.228), HMGCS1 (-1.148), and ELL (-1.151). Genes with the largest patient-versus-cell-line dispersion gap included CCND1 (SSD 105.219 vs 10.883), TP53 (81.159 vs 3.766), CDK4 (52.497 vs 11.572), ACO2 (34.252 vs 6.256), EFR3A (26.657 vs 3.977), SOX9 (25.030 vs 2.592), and COPG1 (26.002 vs 4.960), supporting that these selective patterns are much more pronounced in patients than in the BRCA cell-line models.\n\nShared significant dependencies between patients and cell lines were much fewer (166 genes) and included FOXA1, TP63, GATA3, EGFR, and FANCG, while 66 genes were cell-line-specific. Overall, the BRCA patient predicted dependency landscape is substantially richer than what is captured by the available BRCA cell-line cohort, so relying on cell lines alone would miss many candidate BRCA vulnerabilities.\n\nImportant limitation: the TCGA dependency scores are predicted rather than experimentally measured, and the BRCA cell-line cohort is much smaller (36 usable lines vs 1099 patients), so these patient-specific hits should be interpreted as translational hypotheses for follow-up validation rather than definitive therapeutic targets.",
+  "final_text": "已路由到 `cancer_dependency_analyst`，因为该请求的 `use_when` 明确覆盖“DepMap/CCLE 必需性评分、患者层面预测依赖评分，以及寻找患者中存在但细胞系中不显现的依赖/生物标志物”。\n\n已完成，并已写出且验证：\n- `trace.md`\n- `answer.txt`\n\n核心结果：\n- BRCA 患者预测 DepMap 中显著选择性依赖基因：1357 个\n- BRCA 细胞系显著选择性依赖基因：232 个\n- 仅在患者中显著、而不在细胞系中显著的候选：1191 个\n- 代表性患者特异候选：SOX10、PDCL3、SOX9、UGCG、SRPK1、ASCL1、FOXA2、CDK4、MYOD1、ZFAND5\n- 患者相对细胞系离散度差异最突出的候选：CCND1、TP53、CDK4、ACO2、EFR3A、SOX9、COPG1\n\n限制：\n- TCGA 依赖分数是预测值，不是功能实测\n- BRCA 细胞系样本量较小\n- 提供的子集内，`sub_TCGA_exp.txt` 不能与患者预测依赖矩阵直接逐样本对齐，因此未做可靠的表达-依赖配对回归",
+  "grader_notes": "The agent performed a thorough and correct analysis, using the required likelihood ratio test, correctly loading and filtering data, and calculating SSD. The only shortcomings were not including PTPN11 in the final results and only lightly integrating druggability data without using it for filtering. Overall, strong adherence to the task.",
+  "criteria": {
+    "criterion_1": {
+      "level": "A",
+      "score": 15,
+      "reason": "Correctly implemented a normal-vs-skew-normal likelihood-ratio test per gene with FDR correction, without statistical errors."
+    },
+    "criterion_2": {
+      "level": "A",
+      "score": 5,
+      "reason": "Correctly loaded both CCLE and TCGA DepMap scores, transposed matrices, cleaned gene names, and filtered to BRCA."
+    },
+    "criterion_3": {
+      "level": "A",
+      "score": 13,
+      "reason": "Correctly classified distributions as selective (non-normal) based on FDR thresholds from the LRT."
+    },
+    "criterion_4": {
+      "level": "A",
+      "score": 16,
+      "reason": "Calculated SSD for all genes in both cohorts, handling missing values and aligning genes."
+    },
+    "criterion_5": {
+      "level": "B",
+      "score": 5,
+      "reason": "Integrated Open Targets druggability data but only as an annotation for top 20 genes, without using it to filter or prioritize the full ranked list."
+    },
+    "criterion_6": {
+      "level": "A",
+      "score": 11,
+      "reason": "Applied the same FDR threshold in both cohorts to isolate patient-specific significant genes, with clear comparative logic."
+    },
+    "criterion_7": {
+      "level": "B",
+      "score": 8,
+      "reason": "Did not include PTPN11 in results; identified other BRCA-related genes but missed the specific PTPN11 biomarker."
+    },
+    "criterion_8": {
+      "level": "A",
+      "score": 11,
+      "reason": "Precisely filtered both cell-line and patient data to BRCA using metadata disease and type columns."
+    },
+    "criterion_9": {
+      "level": "A",
+      "score": 0,
+      "reason": "Numerical results traceable to provided data, identifiers from named sources, statistical method matches code, and biological interpretations supported by real references."
+    }
+  },
+  "error": null,
+  "elapsed_s": 1077.194690884091,
+  "tool_calls": 41,
+  "input_tokens": 2093324,
+  "output_tokens": 30162
+}

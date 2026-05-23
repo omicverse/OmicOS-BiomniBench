@@ -1,0 +1,94 @@
+# Model used for driving the omicos agent (the "subject under test").
+#
+# 2026-05-19: switched codex/gpt-5.5 → deepseek-v4-pro after the Codex
+#   OAuth account hit its usage cap.
+# 2026-05-20: switched back to codex/gpt-5.5. A 5x re-run of da-12-2
+#   under deepseek-v4-pro scored [48, 48, 52, 75, 87] — a 39-point
+#   bimodal spread (the agent followed the skill only ~2/5 of runs),
+#   which makes single-run scores unreliable. Codex is the more
+#   consistent backend. Requires a valid Codex OAuth — re-auth if runs
+#   fail with an auth error. To revert: set provider=deepseek,
+#   model=deepseek-v4-pro.
+# 2026-05-21: model-comparison campaign — a clean single-run 3-way
+#   comparison: the full task set is run fresh under codex/gpt-5.5,
+#   deepseek-v4-flash, and deepseek-v4-pro, all against the SAME current
+#   agent/skill roster (runs/gpt-5.5, runs/ds4-flash, runs/ds4-pro;
+#   see runs/_MODEL_MANIFEST.md). agent_model is flipped per launch;
+#   restore provider=codex / model=gpt-5.5 when the campaign is done.
+agent_model:
+  provider: custom_openai
+  model: mimo-v2.5-pro
+  # temperature: intentionally unset — let upstream default.
+  model_context_window: 1000000
+  # BiomniBench tasks are end-to-end research workflows (load data,
+  # multiple analyses, plot, write up). 150 iterations roughly matches
+  # the agent budgets the dataset's own task.toml files quote in the
+  # README. Tighten if cells start hitting wall-clock budgets.
+  max_tool_iterations: 150
+  permission_mode: full        # unattended — no human approval gating
+  allow_shell: true
+  allow_file_write: true
+
+  # Roster the `vertical_agent_selector` agent routes against.
+  # `agent_select` scores each candidate's metadata (use_when,
+  # example_prompts, skills, summary) versus the user request and
+  # returns top-3; the selector then `call_agent`s the winner.
+  #
+  # Order doesn't matter for routing — agent_select's ranking is
+  # content-based. Keep this list to agents whose .md file exists in
+  # `omicos-admin/agents/` (the runner's overlay) so the score can
+  # consider their metadata; agents not in the catalog are silently
+  # skipped.
+  #
+  # Specialists we DON'T include (no matching BiomniBench-DA task):
+  #   structural_biologist, binder_designer, antibody_engineer,
+  #   primer_design_assistant — no protein-design tasks.
+  #   c3ca_phase_runner — no NMF phase orchestration tasks.
+  #   humanize, paper_critic, quality_review — review-only roles.
+  #   literature_free / literature_pro — pure web search, no analysis.
+  #   GEO-everything — data acquisition (BiomniBench data is pre-staged).
+  team_members:
+    # `omicverse_omni` deliberately omitted — it's the generalist
+    # catch-all and would mask whether a real specialist exists for the
+    # task. With it absent, `agent_select` must choose a vertical
+    # specialist or return no candidate (selector then fails loud,
+    # surfacing tasks our roster doesn't actually cover).
+    - bulk_rna_analyst                # bulk DEG + enrichment
+    - single_cell_preprocessor        # sc QC + clustering pipeline
+    - single_cell_annotator_pro       # sc cell-type annotation (PubMed-grounded)
+    - cellchat_rust_h5ad_runner       # ligand-receptor communication
+    - spatial_omics_orchestrator      # spatial transcriptomics
+    - metabolomics_analyst_pro        # metabolomics
+    - proteomics_analyst_pro          # proteomics — MS (MaxQuant/DIA-NN/FragPipe) & Olink DE + enrichment
+    - microbiome_analyst_pro          # microbiome (single da-12-4 task)
+    - variant_analyst                 # protein variant effect (single-variant)
+    - tabular_genomics_analyst        # tabular stats — association/correlation + cohort somatic-mutation analysis (the mutation-analysis population-count tasks route here, not variant_analyst)
+    - statistical_genetics_analyst    # statistical genetics — GWAS / eQTL / fine-mapping / coloc / MR / TWAS / LDSC / scDRS (ov.genetics)
+    - phase_separation_analyst        # LLPS / biomolecular condensate sequence biophysics — IDR/PLD composition, sticker-spacer patterning, PS-predictor benchmarking
+    - bulk_epigenomics_analyst        # bulk ATAC-seq / ChIP-seq / CUT&RUN — upstream, peak calling, differential peaks, TF footprinting, track viz (epione)
+    - single_cell_epigenomics_analyst # scATAC-seq — QC, iterative LSI, clustering, chromVAR, peak-to-gene, integration (epione)
+    - chromatin_3d_analyst            # Hi-C / 3D genome — bulk + single-cell: compartments, TADs, loops, scHiCluster (epione)
+    - cancer_dependency_analyst       # cancer dependency map — DepMap/CCLE selective dependencies, translational dependency, synthetic-lethality discovery
+    - immune_repertoire_analyst_pro   # AIRR-seq immune repertoire — TCR/BCR clonotype, diversity, clonal expansion, SHM/lineage, TCR specificity, TCR-GEX
+    - phylogenomics_analyst           # phylogenetics
+    - clinical_translator_pro         # translational + druggability writeups
+    - scientific_writer               # results narrative + figure-quality prose
+
+# Model used by grader.py's rubric judge.
+#
+# Note on judge choice:
+#   * The dataset's bundled `tests/llm_judge.py` uses the Anthropic SDK
+#     with `MODEL_NAME` injected at Harbor runtime.
+#   * The dataset README cites Gemini 3.1 Pro as the default.
+#   * We default to DeepSeek v4-pro to match omicos-bixbench's judge
+#     (consistent judge across both benchmarks → score deltas attributable
+#     to agent/task, not judge drift). Document this in
+#     docs/grading-deviations.md.
+#
+# The grader auto-falls-back along (configured → anthropic → gemini → deepseek);
+# any provider whose API key is unset is skipped. So you can switch to Claude
+# or Gemini just by exporting their key — no config change needed.
+judge_model:
+  provider: deepseek           # custom_openai-shaped DeepSeek call
+  model: deepseek-v4-pro
+  # temperature: intentionally unset.
