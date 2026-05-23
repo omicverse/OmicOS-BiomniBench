@@ -26,7 +26,7 @@ import plotly.graph_objects as go
 PROJECT = Path(__file__).resolve().parents[1]
 ANALYSIS = PROJECT / "analysis"
 INFRA = {"no_output", "error", "serve_failed", "judge_unavailable"}
-FAIL_CASES = {"da-12-4", "da-18-7", "da-19-1", "da-20-1", "da-6-2", "da-8-3"}
+FAIL_CASES = {"da-12-4", "da-18-7", "da-20-1", "da-6-2"}
 
 DIMS = ["data handling", "method selection", "statistical rigor",
         "biological interpretation", "scientific reasoning", "source reliability"]
@@ -135,7 +135,7 @@ def main():
             text=("<b>BiomniBench-DA capability profile by dimension</b>"
                   "<br><span style='font-size:13px;color:#777'>"
                   "% of A-level rubric points earned per dimension; "
-                  "6 failure-case tasks + infra-failure cells excluded"
+                  "4 failure-case tasks + infra-failure cells excluded"
                   "</span>"),
             x=0.5, xanchor="center", y=0.97,
         ),

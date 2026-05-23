@@ -107,7 +107,7 @@ Always clear infra failures before trusting a model's mean.
 python3 scripts/bench_compare.py <labelA> <labelB> ...
 ```
 
-Prints, per model, `capability mean` (excludes the 6 documented
+Prints, per model, `capability mean` (excludes the 4 documented
 failure-case tasks in `docs/failure-cases/` **and** any infra-failure
 cells), plus a side-by-side per-task table.
 

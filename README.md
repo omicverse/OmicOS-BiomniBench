@@ -40,16 +40,16 @@ A cell counts as **passed** when `score >= 0.7`.
 
 ## Headline results
 
-**7 models · 50 tasks · capability mean** (excludes 6 documented benchmark-defect tasks and infra-failure cells; see `docs/failure-cases/`):
+**7 models · 50 tasks · capability mean** (excludes 4 documented benchmark-defect tasks and infra-failure cells; see `docs/failure-cases/`):
 
 | Model            | Capability mean | All-50 mean |
 |------------------|----------------:|------------:|
-| **gpt-5.5**      | **81.2%**       | 78.8%       |
-| ds4-pro          | 74.3%           | 73.0%       |
-| gpt-5.4          | 68.8%           | 67.7%       |
-| ds4-flash        | 67.7%           | 66.0%       |
-| mimo-v2.5-pro    | 67.3%           | 64.5%       |
-| mimo-v2.5        | 63.7%           | 62.7%       |
+| **gpt-5.5**      | **80.7%**       | 78.8%       |
+| ds4-pro          | 73.9%           | 73.0%       |
+| gpt-5.4          | 68.0%           | 67.7%       |
+| ds4-flash        | 67.3%           | 66.0%       |
+| mimo-v2.5-pro    | 67.1%           | 65.8%       |
+| mimo-v2.5        | 63.7%           | 62.3%       |
 | gpt-5.4-mini     | 44.2%           | 44.2%       |
 
 Two of the cheapest models (ds4-flash, mimo-v2.5) are within 6 pp of gpt-5.4 at a fraction of the API cost. See `analysis/omicos_cost_vs_score.png` (static) or [`analysis/omicos_cost_vs_score.html`](analysis/omicos_cost_vs_score.html) (interactive — hover for per-cell numbers, including omicos vs published external harnesses).
@@ -66,6 +66,42 @@ Interactive Plotly version (hover each vertex for the exact percentage, click a 
 
 The full 355-criteria → 6-dimension mapping is audit-able in
 `analysis/omicos_dim_map.csv`; edit & re-run `scripts/bench_radar.py` to refine.
+
+## Failure analysis — every sub-0.7 gpt-5.5 task
+
+For the canonical gpt-5.5 run, 11 of 50 tasks scored below the 0.7 pass
+threshold. We read every trajectory + rubric + grader notes and
+classified the score gap into three buckets:
+
+- **🟥 Benchmark broken** — gold answer / rubric methodology is itself wrong (statistically incorrect, contradicts the question, or rests on retracted science). Agent's behaviour is defensible. **These four are excluded from the capability mean.**
+- **🟧 Rubric strict** — rubric demands a specific methodology not communicated in `instruction.md`; the agent's alternative choice is methodologically defensible. Reasonable people can disagree; we keep these in the capability mean.
+- **🟦 Agent gap** — agent genuinely skipped a required step or used a sub-optimal method. This is the real capability ceiling.
+
+| Task | Score | Issue | Bucket |
+|---|---:|---|:---:|
+| `da-20-4` | 0.28 | Agent ran DE + GSEA but **omitted KRAS_SIGNALING_UP and EMT pathway interpretation entirely** (C4=0, C5=0); also only analyzed the 3000 nM dose instead of all 24 BFA conditions. Skipping the two key Hallmark pathways the question implicitly hinges on is a real omission. | 🟦 Agent gap |
+| `da-6-2` | 0.35 | Question asks "**dynamically change** + temporal patterns"; rubric requires *significance at all 4 timepoints* before pattern encoding — that filter discards **86%** of training-responsive genes (every late-onset / transient response), the **opposite** of the question's "dynamic" framing. | 🟥 Benchmark broken |
+| `da-20-1` | 0.46 | Question asks "most similar cell-type pair". Agent's analysis (ARI=0.991, perfect clustering) ranks SkMM-Fibroblast and AoSMC-SkMM within **<1%** — a statistical tie. Rubric requires AoSMC-SkMM and cites ACTA2/TAGLN as evidence — but those are smooth-muscle/fibroblast markers, **not skeletal-myoblast markers**. Cited biology contradicts the cited answer. | 🟥 Benchmark broken |
+| `da-13-5` | 0.50 | Question: "Do feminizing GAHT-associated proteins overlap with sex-associated proteins?" Agent overlapped the full significant sex-associated set (2606 proteins); rubric demands "top 100 by Sex_log10_p". **Instruction never specifies "top 100"** — that's an arbitrary cutoff the rubric adds. Agent's full-set hypergeometric is statistically sound. | 🟧 Rubric strict |
+| `da-24-3` | 0.60 | Multi-trait GWAS shared loci. Agent did inverse-variance meta-analysis + custom coloc → 14 loci → 4 shared. Lost points on (C4) **not checking discovery/replication direction consistency** — that's a real methodological omission — and on (C6/C7) coloc-input details (MAF/sdY) which are method-detail nits. Roughly half agent gap, half rubric. | 🟦 Agent gap (dominant: C4 direction check) |
+| `da-18-7` | 0.62 | Question literally says "mutually exclusive **or** co-occurring" (bidirectional). Rubric forces **one-sided** Fisher's exact test, which can only detect mutex — statistically wrong for the question wording. Phantom ESR1-LBD restriction (every observed variant already in 300-550). | 🟥 Benchmark broken |
+| `da-13-3` | 0.64 | "Which proteins correlate with body composition" — agent ranked by adjusted p-value; rubric demands ranking by **absolute effect size**. Instruction doesn't specify ranking criterion. Both p-value and effect-size rankings are standard in proteomics. | 🟧 Rubric strict |
+| `da-19-4` | 0.65 | Question: "Which genomic regions show reduced H3K27ac upon AI-10-49 treatment?" Agent did a clean genome-wide DE on H3K27ac peaks (9048 reduced regions). Rubric requires specific **MYC ME1/ME2/BDME enhancer** analysis using RUNX1 ChIP-seq anchors — agent missed that the task's leukemia-context implied a MYC-locus focus, not just genome-wide. | 🟦 Agent gap (missed MYC-specific call) |
+| `da-17-3` | 0.65 | SLE classical-monocyte DE. Agent used pseudobulk OLS on log-CPM; rubric demands count-based DESeq2/edgeR + `|log2FC|>0.5` threshold. **Instruction doesn't specify methodology or threshold.** Both pseudobulk-OLS and count-based DE are defensible; both filter conventions are common. | 🟧 Rubric strict |
+| `da-20-3` | 0.68 | "Which Hallmark pathways are suppressed by BFA?" — agent used pre-ranked GSEA with **signed z-score** ranking; rubric demands ranking by **log2FoldChange directly**. Instruction doesn't specify. Both ranking metrics are mainstream GSEA conventions. | 🟧 Rubric strict |
+| `da-8-3` | 0.68 | Spiker classification has two issues: (i) rubric prescribes `peak-glucose-delta + median-split` but instruction provides no definition — agent's `positive iAUC` choice is defensible; **rubric-strict on C1**. (ii) Agent **completely skipped the phenotype-correlation analysis** (against SSPG / Hepatic IR / DI / IE) that the instruction explicitly asks for ("determine which lipid species *statistically mediate*...") — **agent gap on C4 (0/15)**, which is the dominant score loss. | 🟦 Agent gap (dominant: C4 correlation skipped) |
+
+**Summary of the 11 sub-0.7 tasks**:
+
+- **🟥 Benchmark broken: 3** (da-6-2, da-20-1, da-18-7) — plus `da-12-4` which has the same broken-benchmark issue but happens to score 0.86 because the canonical run follows the broken recipe. **Total excluded from capability mean: 4.**
+- **🟧 Rubric strict (defensible disagreement): 4** (da-13-5, da-13-3, da-17-3, da-20-3) — kept in capability mean
+- **🟦 Agent gap (real ceiling): 4** (da-20-4, da-24-3, da-19-4, da-8-3) — kept in capability mean, these are the score-relevant places to improve next
+
+**Interpretation**: roughly half the score loss in the sub-0.7 tier comes from rubric over-specification (the rubric prescribes a particular methodology that the instruction never communicates), and roughly half comes from genuine agent shortcomings. The single biggest agent-side pattern is **skipping a required sub-step** (da-19-4 missed MYC-locus analysis, da-8-3 missed phenotype correlation, da-20-4 missed two Hallmark pathway interpretations, da-24-3 missed direction-consistency check). That's the same failure mode each time — the agent runs the primary analysis competently but skips one of the secondary analyses the question implicitly requires.
+
+Per-task case studies for the 4 broken-benchmark cases live in
+[`docs/failure-cases/`](docs/failure-cases/); each has the full
+trajectory + rubric + side-by-side citation.
 
 ## Quick start
 
@@ -158,7 +194,7 @@ OmicOS-BiomniBench/
 
 - **Two-source rubric layout.** Each task has its own `tests/rubric.txt` shipped with the HF dataset. Criteria look like `Criterion 3: Title \n Description: ...\n Levels: A=18 B=8 C=0 \n [A]: ...`. The grader parses these, sends the agent's `trace.md` + `answer.txt` to the judge, and asks for an A/B/C per criterion.
 - **Judge default**: DeepSeek v4-pro (`OmicBench` uses the same). Fallback chain: `(configured → anthropic → gemini → deepseek)`. Swap with `OMICOS_BENCH_JUDGE_MODEL`.
-- **Failure cases.** Six tasks are documented as *benchmark defects* (rubric ↔ instruction mismatch, retracted source data, etc.) in `docs/failure-cases/`. The headline `Capability mean` excludes them; the `All-50 mean` includes them so the unfiltered score is still visible.
+- **Failure cases.** Four tasks are documented as *benchmark defects* in `docs/failure-cases/`: a gold answer that rests on a retracted paper + contaminant genus (da-12-4), a rubric that forces a one-sided test for an explicitly bidirectional question (da-18-7), a rubric that prescribes a methodology contradicting the question's open framing (da-6-2), and a "most similar pair" that is a statistical tie with a biologically-wrong gold answer (da-20-1). The headline `Capability mean` excludes them; the `All-50 mean` includes them so the unfiltered score is still visible.
 - **Infra failures** (`no_output / error / serve_failed / judge_unavailable`) are excluded from both means and flagged separately by `scripts/bench_compare.py --infra <label>`.
 
 See `docs/model-benchmarking.md` for the full reproducibility recipe.

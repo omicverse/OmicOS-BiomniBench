@@ -1,33 +1,33 @@
 # BiomniBench-DA failure cases
 
 This folder collects per-task case studies for tasks where the
-omicos-biomnibench harness measured a low score AND the reason is
-worth documenting rather than fixing. Two kinds of cases land here:
+benchmark question or rubric itself is broken — the gold answer rests
+on scientifically wrong premises, or the rubric forces a methodology
+that contradicts the question. These are the four tasks excluded from
+the **capability mean** in the headline table; the **all-50 mean**
+still includes them so unfiltered scores are visible.
 
-1. **Benchmark-calibration cases** — agent's underlying science is
-   correct (verified by the grader's own scientific-reasoning
-   criterion) but the rubric penalizes specific methodology choices
-   that were never communicated through `instruction.md`. These are
-   *not* fixable on the omicos side without rubric leakage. We
-   document them so aggregate scores are interpretable.
+For the broader analysis of every sub-0.7 task in the canonical
+gpt-5.5 run (including the cases that are **not** benchmark-broken —
+agent gaps and rubric-strict-but-defensible deductions), see the
+"Failure analysis" section of the [top-level README](../../README.md).
 
-2. **Architecture / catalog cases** — real gaps in omicos coverage
-   (missing specialist, prompt-level limitation, model-compliance
-   shortfall) where the documentation captures *why* the case
-   exhibits the behavior and what would be needed to close the gap.
-   These often have associated GitHub issues or PRs.
+## Index — 4 broken-benchmark tasks
 
-Each case file is named `<task_id>-<short-tag>.md`. Headings inside
-follow the template: TL;DR, instruction vs. rubric quotes, agent
-output, side-by-side, classification, mitigation options.
+| Task | Why the benchmark is broken | gpt-5.5 score | File |
+|---|---|---:|---|
+| `da-12-4` | Gold says *Kocuria* is a significant prognostic factor; the agent's earlier `covered14` run correctly said no — gold rests on a **retracted** TCGA tumor-microbiome paper (Poore et al. 2020 *Nature*, retracted 2024-07) and a known sequencing-contaminant genus. The canonical gpt-5.5 run happens to follow the broken recipe and score 0.86; the question is still scientifically wrong. | 0.86 | [da-12-4-kocuria-gold-answer-on-retracted-data.md](da-12-4-kocuria-gold-answer-on-retracted-data.md) |
+| `da-6-2` | Question asks "**dynamically change** + predominant **temporal expression patterns**"; rubric requires significance at *all four* timepoints before pattern encoding — discarding 86% of training-responsive genes including every late-onset / transient / delayed response. The mandated filter is the **opposite** of what the question's framing implies. | 0.35 | [da-6-2-rubric-demands-all-4-timepoint-filter.md](da-6-2-rubric-demands-all-4-timepoint-filter.md) |
+| `da-18-7` | Question asks explicitly bidirectional "mutually exclusive **or** co-occurring"; rubric forces a one-sided Fisher's exact test (which can only detect mutex). Statistically wrong test for the question's wording. Also docks for "ESR1 must be restricted to LBD aa 300-550" — every observed variant is already in 300-550, so the restriction is a phantom penalty. | 0.62 | [da-18-7-one-sided-test-for-a-two-sided-question.md](da-18-7-one-sided-test-for-a-two-sided-question.md) |
+| `da-20-1` | Question asks "which two cell types most similar"; every metric the agent computes ranks SkMM-Fibroblast and AoSMC-SkMM within <1% (a statistical tie). Rubric requires AoSMC-SkMM and cites ACTA2/TAGLN as shared-lineage evidence — but ACTA2/TAGLN are **smooth-muscle / fibroblast markers, not skeletal-myoblast markers**, so the cited biology contradicts the cited pair. | 0.46 | [da-20-1-most-similar-pair-is-a-statistical-tie.md](da-20-1-most-similar-pair-is-a-statistical-tie.md) |
 
-## Index
+## What's NOT in this folder anymore
 
-| Task | Class | Score | One-line | File |
-|---|---|---:|---|---|
-| da-19-1 | benchmark-calibration | 63 | Rubric expects specific log2FC/q cutoffs not in instruction; agent's biology matched gold exactly | [da-19-1-rubric-vs-instruction-mismatch.md](da-19-1-rubric-vs-instruction-mismatch.md) |
-| da-12-4 | benchmark-calibration | 73 | Gold says Kocuria is a significant prognostic factor; agent (correctly) says no — gold rests on a retracted dataset + a contaminant genus | [da-12-4-kocuria-gold-answer-on-retracted-data.md](da-12-4-kocuria-gold-answer-on-retracted-data.md) |
-| da-8-3 | benchmark-validity | 63 | Task says to use "participant phenotypic classifications" but no data file ships them; rubric grades an un-stated derivation method + a correlation analysis the instruction never asks for | [da-8-3-spiker-classification-not-in-data.md](da-8-3-spiker-classification-not-in-data.md) |
-| da-18-7 | benchmark-calibration | 70 | Question asks an explicitly two-directional "exclusive or co-occurring" question; agent runs the statistically correct two-sided Fisher test; rubric docks it for not using one-sided, plus an ESR1-LBD restriction with zero numerical effect and a non-canonical MAPK gene list — score suppressed ~15-20 pts | [da-18-7-one-sided-test-for-a-two-sided-question.md](da-18-7-one-sided-test-for-a-two-sided-question.md) |
-| da-6-2 | benchmark-calibration | 65 | Question asks for "temporal dynamics / predominant patterns"; rubric requires significance at all 4 timepoints before pattern encoding — an un-stated, restrictive filter that discards 86% of responsive genes (every late / transient responder) and contradicts the question; worth 30 pts. Criterion 2 also names a per-gene column (`training_q`) for a per-timepoint requirement | [da-6-2-rubric-demands-all-4-timepoint-filter.md](da-6-2-rubric-demands-all-4-timepoint-filter.md) |
-| da-20-1 | benchmark-calibration | 71 | Question asks which two cell types are most similar; every metric the agent computes ranks SkMM–Fibroblast and AoSMC–SkMM within <1% (a statistical tie), but the rubric requires the AoSMC–SkMM pair be named and cites ACTA2/TAGLN as shared-lineage evidence — markers that are smooth-muscle/fibroblast, not skeletal-myoblast. C2/C3 also pin exact gene/component counts absent from the instruction; ~29 pts | [da-20-1-most-similar-pair-is-a-statistical-tie.md](da-20-1-most-similar-pair-is-a-statistical-tie.md) |
+These were originally listed as failure cases but on re-review do not
+meet the "benchmark broken" bar:
+
+- **`da-19-1`** (gpt-5.5: 0.72 passing) — rubric is strict on filter thresholds (q<0.01 + log2FC<=-1) but the strict gold answer is itself scientifically defensible; agent uses Cuffdiff defaults and still passes. Not broken, just strict.
+- **`da-8-3`** (gpt-5.5: 0.68) — the spiker definition is ambiguous (rubric C1=B), but the dominant score loss is the agent skipping the required phenotype correlation step (C4 = 0/15). That's an **agent gap**, not a benchmark issue.
+
+Both are now discussed in the top-level README's "Failure analysis"
+section under their respective categories.

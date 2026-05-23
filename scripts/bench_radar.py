@@ -36,7 +36,7 @@ import numpy as np
 
 PROJECT = Path(__file__).resolve().parents[1]
 INFRA = {"no_output", "error", "serve_failed", "judge_unavailable"}
-FAIL_CASES = {"da-12-4", "da-18-7", "da-19-1", "da-20-1", "da-6-2", "da-8-3"}
+FAIL_CASES = {"da-12-4", "da-18-7", "da-20-1", "da-6-2"}
 
 DIMS = ["data handling", "method selection", "statistical rigor",
         "biological interpretation", "scientific reasoning", "source reliability"]
@@ -218,7 +218,7 @@ def main(labels):
     fig.suptitle("BiomniBench-DA capability profile by dimension",
                  fontsize=13, y=0.97, fontweight="bold")
     ax.set_title("% of A-level rubric points earned per dimension\n"
-                 "(6 failure-case tasks + infra-failure cells excluded)",
+                 "(4 failure-case tasks + infra-failure cells excluded)",
                  fontsize=10, pad=24, color="#555")
 
     # Side legend with a tidy data table
