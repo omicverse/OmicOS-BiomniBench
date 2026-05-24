@@ -67,6 +67,38 @@ Interactive Plotly version (hover each vertex for the exact percentage, click a 
 The full 355-criteria → 6-dimension mapping is audit-able in
 `analysis/omicos_dim_map.csv`; edit & re-run `scripts/bench_radar.py` to refine.
 
+### Per-task-type breakdown — where each model wins and loses
+
+BiomniBench-DA's 50 tasks span 16 distinct analytical task types
+(`task.toml -> [metadata].task_type`). The heatmap below shows each
+backend's mean rubric score on every task type — rows sorted by
+overall capability mean (best at top), columns by sample size. The
+4 documented benchmark-broken tasks (`da-12-4`, `da-18-7`, `da-20-1`,
+`da-6-2`; see `docs/failure-cases/`) and infra-failure cells are
+excluded from the cell means so values reflect capability, not
+plumbing or rubric-versus-question artifacts.
+
+![BiomniBench-DA per-model × per-task-type mean rubric score](analysis/omicos_heatmap_by_task_type.png)
+
+*Patterns visible at a glance:*
+
+- *`pathway-enrichment` is the across-the-board weak axis — every
+  backend, including gpt-5.5, scores well below its own overall
+  mean here (best is gpt-5.5 at 59).*
+- *Within the mid-budget tier (mimo-v2.5-pro, ds4-flash, mimo-v2.5,
+  gpt-5.4), per-task-type ranks shuffle: mimo-v2.5-pro leads on
+  `differential-expression` (82, beating gpt-5.5's 73); ds4-flash
+  leads on `cell-composition` (87); gpt-5.4 leads the mid-tier on
+  `predictive-modeling` (85). Picking one backend per task type is
+  consistently better than picking one backend for everything.*
+- *`co-expression-networks` (n=1) and `cross-cohort-comparison`
+  (n=2) are the spots where non-gpt-5.5 backends collapse to the
+  20s–30s — sparse-data inference at this size remains a
+  capability gap for the cheaper models.*
+
+*Grey "—" cells are types where every available cell was an
+infra-failure for that model under the canonical sweep.*
+
 ## Failure analysis — every sub-0.7 gpt-5.5 task
 
 For the canonical gpt-5.5 run, 11 of 50 tasks scored below the 0.7 pass
